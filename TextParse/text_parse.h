@@ -1,0 +1,45 @@
+#ifndef TEXT_PARSE_HEADER
+#define TEXT_PARSE_HEADER
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <strings.h>
+
+#include <sys/stat.h>
+
+typedef enum
+{
+    kSuccess        = 0,
+    kOpenError      = 1,
+    kAllocError     = 2,
+    kFreeError      = 3,
+    kCloseError     = 4,
+    kReadingError   = 11,
+    kReallocError   = 12,
+} TextErrs_t;
+
+struct Text
+{
+    char **lines_ptr;
+    size_t lines_count;
+    char *buf;
+    size_t buf_size;
+};
+
+void SkipSpaces(char **line);
+
+size_t GetFileSize(FILE *ptr_file);
+
+TextErrs_t ReadTextFromFile(Text *text,
+                              const char *file_name);
+
+size_t SplitBufIntoWords(char *buf);
+
+void FillText(Text *text);
+
+void TextDtor(Text *text);
+
+void PrintTextInFile(FILE *output_file,
+                     Text *text);
+
+#endif
