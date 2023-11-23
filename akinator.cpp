@@ -63,6 +63,10 @@ AkinatorCmd_t CallInterface(Tree *tree)
         }
     }
 
+    printf(">>GoodBye");
+
+    PrintTreeInFile(tree);
+
     return kAkinatorSuccess;
 }
 
@@ -81,6 +85,11 @@ AkinatorCmd_t CallGuesser(Tree *tree, TreeNode *node)
 
         if (status == kYesAnswer)
         {
+            printf(">>You can:\n"
+                   "\t-Print definition of this object (use command \"definition\") or\n"
+                   "\t-Quit (use command \"quit\")"
+                   "\t-Suck dick\n>>");
+
             return kAkinatorSuccess;
         }
         else if (status == kNoAnswer)
@@ -131,13 +140,17 @@ AkinatorCmd_t AddMember(Tree *tree, TreeNode *node)
 
         scanf("%s", new_member_str);
 
-        NodeCtor(tree, &node->right, new_member_str);
+        NodeCtor(tree,
+                 node,
+                 &node->right, new_member_str);
 
         printf(">>What is the difference between this answers?\n");
 
         scanf("%s", new_member_str);
 
-        NodeCtor(tree, &node->left, new_member_str);
+        NodeCtor(tree,
+                 node,
+                 &node->left, new_member_str);
 
         SwapNodesData(node, node->left);
 

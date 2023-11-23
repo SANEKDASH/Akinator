@@ -1,9 +1,43 @@
 (
-
-Vedet_matan
-
-( Obshesosik leha_krasnov Ovchos )
-
-( Man ( Faker Lunina Petrovich_Baba ) ( Faker Petrovich Umnov ) )
-
-)
+ "blyadina" (
+ "penis" (
+ "tupoy" (
+ "part_of_body" (
+ "metal" (
+ "rugatelstvo" (
+ "hairs" null null )
+ (
+ "pidarasina" null null )
+ )
+ (
+ "gold" null null )
+ )
+ (
+ "hueglot" null null )
+ )
+ (
+ "viblyadok" null null )
+ )
+ (
+ "gg" (
+ "eggs" null null )
+ (
+ "slovo" (
+ "huila" null null )
+ (
+ "zdarova" null null )
+ )
+ )
+ )
+ (
+ "death_stranding" (
+ "lol" (
+ "huy" null null )
+ (
+ "Aphelios, the weapon of faithful" null null )
+ )
+ (
+ "bb" null null )
+ )
+ )
+ 

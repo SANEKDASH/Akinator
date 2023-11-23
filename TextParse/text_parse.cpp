@@ -84,6 +84,20 @@ size_t SplitBufIntoWords(char *buf)
 
     while (*buf != '\0')
     {
+        if (*buf == '\"')
+        {
+            *(buf++) = '\0';
+
+            while (*buf != '\"')
+            {
+                ++buf;
+            }
+
+            *(buf++) = '\0';
+
+            ++lines_count;
+        }
+
         if ((*buf) == '\n' || (*buf) == '\r' || (*buf) == ' ')
         {
             while (*buf == '\n' || *buf == '\r' || *buf == ' ')
@@ -93,7 +107,7 @@ size_t SplitBufIntoWords(char *buf)
         }
         else
         {
-            while ((*buf) != '\n' && *buf != '\0' && *buf != '\r' && *buf != ' ')
+            while ((*buf) != '\n' && *buf != '\0' && *buf != '\r' && *buf != ' ' &&  *buf != '\"')
             {
                 ++buf;
             }

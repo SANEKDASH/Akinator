@@ -15,14 +15,13 @@ int main()
     BeginTreeGraphDump();
 
     TreeCtor(&tree, "blyadina");
-    ReadTreeFromFile(&tree);
 
+    ReadTreeFromFile(&tree);
     CallInterface(&tree);
 
     EndTreeGraphDump();
     TreeDtor(tree.root);
 
-        GraphDumpList(&tree);
 
 
     return 0;

@@ -1,9 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <assert.h>
 
 #include "trees.h"
 #include "tree_dump.h"
 
+#define PNG
 
 static size_t call_count = 0;
 
@@ -19,6 +21,7 @@ static void LogPrintRelations(TreeNode *node, FILE *dot_file);
 
 void BeginTreeGraphDump()
 {
+    system("rm -f *.svg");
     system("rm -f *.png");
 
     log_file = fopen(log_file_name, "w");
@@ -64,11 +67,12 @@ TreeErrs_t GraphDumpList(Tree *tree)
 
     static char cmd_command[200] = {0};
 
+    assert(dot_file);
 
     LOG_PRINT("digraph List\n{\n"
               "\trankdir = TB;\n"
               "\tgraph [bgcolor = \"black\"]\n"
-              "\tnode[color =\"black\", fontsize=14];\n"
+              "\tnode[color =\"black\", fontsize=14, shape = Mrecord];\n"
               "\tedge[color = \"red\", fontcolor = \"blue\",fontsize = 12];\n\n\n");
 
 
@@ -80,7 +84,14 @@ TreeErrs_t GraphDumpList(Tree *tree)
 
     fclose(dot_file);
 
-    sprintf(cmd_command, "dot -Tpng list.dmp.dot -o graphdump%d.png", call_count);
+    sprintf(cmd_command, "dot -Tpng list.dmp.dot -o graphdump%d."
+                         #ifdef SVG
+                         "svg"
+                         #endif
+                         #ifdef PNG
+                         "png"
+                         #endif
+                         , call_count);
 
     system(cmd_command);
 
@@ -88,7 +99,14 @@ TreeErrs_t GraphDumpList(Tree *tree)
     fprintf(log_file, /*"Called from file: %s\n"
                       "Called from function: %s\n"
                       "Line: %d\n"*/
-                      "<img height=\"150px\" src=\"graphdump%d.svg\">\n"
+                      "<img height=\"150px\" src=\"graphdump%d."
+                      #ifdef SVG
+                      "svg"
+                      #endif
+                      #ifdef PNG
+                      "png"
+                      #endif
+                      "\">\n"
                       "-----------------------------------------------------------------\n",
                       /*file,
                       func,
@@ -105,9 +123,13 @@ TreeErrs_t GraphDumpList(Tree *tree)
 
 static void LogPrintTree(TreeNode *node, FILE *dot_file)
 {
-    LOG_PRINT("node%p [style = filled, fillcolor = \"green\", shape = Mrecord, label = \"%s\"]\n",
+    LOG_PRINT("node%p [style = filled, fillcolor = \"green\", shape = Mrecord, label = \"data: %s | {parent: %p | pointer: %p | left: %p | right: %p} \"]\n",
               node,
-              node->data);
+              node->data,
+              node->parent,
+              node,
+              node->left,
+              node->right);
 
     if (node->left != nullptr)
     {
@@ -129,6 +151,13 @@ static void LogPrintRelations(TreeNode *node, FILE *dot_file)
         LOG_PRINT("node%p->node%p\n",
                   node,
                   node->left);
+    }
+
+    if (node->parent != nullptr)
+    {
+        LOG_PRINT("node%p->node%p[color = \"yellow\"]",
+                  node,
+                  node->parent);
     }
 
     if (node->right != nullptr)

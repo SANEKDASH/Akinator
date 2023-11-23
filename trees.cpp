@@ -8,6 +8,7 @@
 #include "TextParse/text_parse.h"
 #include "trees.h"
 #include "tree_dump.h"
+#include "Stack/stack.h"
 
 static const char *kTreeSaveFileName = "tree_save.txt";
 
@@ -56,7 +57,10 @@ TreeErrs_t TreeDtor(TreeNode *root)
 
 //==============================================================================
 
-TreeErrs_t NodeCtor(Tree *tree, TreeNode **node, TreeDataType_t node_val)
+TreeErrs_t NodeCtor(Tree *tree,
+                    TreeNode *parent_node,
+                    TreeNode **node,
+                    TreeDataType_t node_val)
 {
     CHECK(node);
 
@@ -70,7 +74,8 @@ TreeErrs_t NodeCtor(Tree *tree, TreeNode **node, TreeDataType_t node_val)
     (*node)->data = (TreeDataType_t) calloc(strlen(node_val), sizeof(char));
     strcpy((*node)->data, node_val);
 
-    (*node)->left = (*node)->right = nullptr;
+    (*node)->left   = (*node)->right = nullptr;
+    (*node)->parent = parent_node;
 
     GraphDumpList(tree);
 
@@ -79,9 +84,8 @@ TreeErrs_t NodeCtor(Tree *tree, TreeNode **node, TreeDataType_t node_val)
 
 //==============================================================================
 
-TreeErrs_t PrintTree(TreeNode *root, FILE *output_file)
+TreeErrs_t PrintTree(const TreeNode *root, FILE *output_file)
 {
-    CHECK(root);
     CHECK(output_file);
 
     if (!root)
@@ -91,15 +95,15 @@ TreeErrs_t PrintTree(TreeNode *root, FILE *output_file)
         return kTreeSuccess;
     }
 
-    fprintf(output_file, "( ");
+    fprintf(output_file, "(\n ");
 
-    fprintf(output_file, "%s ", root->data);
+    fprintf(output_file, "\"%s\" ", root->data);
 
     PrintTree(root->left, output_file);
 
     PrintTree(root->right, output_file);
 
-    fprintf(output_file, ") ");
+    fprintf(output_file, ")\n ");
 
     return kTreeSuccess;
 }
@@ -134,22 +138,32 @@ TreeErrs_t ReadTreeFromFile(Tree *tree)
 
     ReadTextFromFile(&tree_text, kTreeSaveFileName);
 
+    //PrintTextInFile(stdout, &tree_text);
+
     size_t iterator = 1;
 
-    CreateNodeFromText(tree, &tree->root, &tree_text, &iterator);
+    CreateNodeFromText(tree,
+                       nullptr,
+                       &tree->root, &tree_text, &iterator);
 
     return kTreeSuccess;
 }
 
 //==============================================================================
 
-TreeErrs_t CreateNodeFromText(Tree *tree, TreeNode **curr_node, Text *text, size_t *iterator)
+TreeErrs_t CreateNodeFromText(Tree *tree,
+                              TreeNode *parent_node,
+                              TreeNode **curr_node,
+                              Text *text,
+                              size_t *iterator)
 {
     CHECK(tree);
     CHECK(curr_node);
     CHECK(iterator);
+    CHECK(text);
 
-    NodeCtor(tree, curr_node, text->lines_ptr[*iterator]);
+
+    NodeCtor(tree, parent_node, curr_node, text->lines_ptr[*iterator]);
 
     ++(*iterator);
 
@@ -157,7 +171,9 @@ TreeErrs_t CreateNodeFromText(Tree *tree, TreeNode **curr_node, Text *text, size
     {
         ++(*iterator);
 
-        CreateNodeFromText(tree, &((*curr_node)->left), text, iterator);
+        CreateNodeFromText(tree,
+                           *curr_node,
+                           &((*curr_node)->left), text, iterator);
     }
     else if (*text->lines_ptr[*iterator] != ')')
     {
@@ -167,7 +183,7 @@ TreeErrs_t CreateNodeFromText(Tree *tree, TreeNode **curr_node, Text *text, size
         }
         else
         {
-            NodeCtor(tree, &(*curr_node)->left, text->lines_ptr[*iterator]);
+            NodeCtor(tree, *curr_node, &(*curr_node)->left, text->lines_ptr[*iterator]);
         }
 
         ++(*iterator);
@@ -177,7 +193,7 @@ TreeErrs_t CreateNodeFromText(Tree *tree, TreeNode **curr_node, Text *text, size
     {
         ++(*iterator);
 
-        CreateNodeFromText(tree, &((*curr_node)->right), text, iterator);
+        CreateNodeFromText(tree, *curr_node, &((*curr_node)->right), text, iterator);
     }
     else if (*text->lines_ptr[*iterator] != ')')
     {
@@ -187,12 +203,11 @@ TreeErrs_t CreateNodeFromText(Tree *tree, TreeNode **curr_node, Text *text, size
         }
         else
         {
-            NodeCtor(tree, &(*curr_node)->right, text->lines_ptr[*iterator]);
+            NodeCtor(tree, *curr_node, &(*curr_node)->right, text->lines_ptr[*iterator]);
         }
 
         ++(*iterator);
     }
-
     if (*text->lines_ptr[*iterator] == ')')
     {
         ++(*iterator);
