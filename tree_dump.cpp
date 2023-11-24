@@ -155,7 +155,7 @@ static void LogPrintRelations(TreeNode *node, FILE *dot_file)
 
     if (node->parent != nullptr)
     {
-        LOG_PRINT("node%p->node%p[color = \"yellow\"]",
+        LOG_PRINT("node%p->node%p[color = \"yellow\"]\n",
                   node,
                   node->parent);
     }

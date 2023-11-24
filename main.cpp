@@ -17,11 +17,13 @@ int main()
     TreeCtor(&tree, "blyadina");
 
     ReadTreeFromFile(&tree);
+
+    //FindNode(tree.root, "Aphelios");
+
     CallInterface(&tree);
 
     EndTreeGraphDump();
     TreeDtor(tree.root);
-
 
 
     return 0;

@@ -9,6 +9,8 @@ typedef enum
     kSaveTree,
     kReviveTree,
     kStartGuessing,
+    kDefinition,
+    kDifference,
     kYesAnswer,
     kNoAnswer,
     kAkinatorSuccess,
@@ -24,7 +26,7 @@ struct AkinatorCommand
     const char *cmd_string;
 };
 
-static const size_t kCmdCount = 6;
+static const size_t kCmdCount = 8;
 
 static AkinatorCommand AkinatorCommandsArray[kCmdCount] =
 {
@@ -34,6 +36,8 @@ static AkinatorCommand AkinatorCommandsArray[kCmdCount] =
     kStartGuessing, "start",
     kYesAnswer,     "yes",
     kNoAnswer,      "no",
+    kDefinition,    "def",
+    kDifference,    "diff",
 };
 
 AkinatorCmd_t CallGuesser(Tree *tree, TreeNode *node);
@@ -43,5 +47,7 @@ AkinatorCmd_t CallInterface(Tree *tree);
 AkinatorCmd_t GetCommand();
 
 AkinatorCmd_t AddMember(Tree *tree, TreeNode *node);
+
+AkinatorCmd_t GiveDefinition(Tree *tree);
 
 #endif

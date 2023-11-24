@@ -2,6 +2,7 @@
 #define TREES_HEADER
 
 #include "TextParse/text_parse.h"
+#include "Stack/stack.h"
 
 typedef char* TreeDataType_t;
 
@@ -10,6 +11,7 @@ typedef enum
     kTreeSuccess,
     kFailedAllocation,
     kFailedToOpenFile,
+    kFailedToFined,
 } TreeErrs_t;
 
 struct TreeNode
@@ -27,6 +29,11 @@ struct Tree
     TreeNode *root;
     size_t status;
 };
+
+
+static const char kGoLeft  = 0;
+static const char kGoRight = 1;
+
 
 TreeErrs_t TreeVerify(Tree *tree);
 
@@ -54,5 +61,9 @@ TreeErrs_t CreateNodeFromText(Tree *tree,
 
 TreeErrs_t SwapNodesData(TreeNode *node_lhs,
                          TreeNode *node_rhs);
+
+TreeNode *FindNode(Stack *stk, TreeNode *node, TreeDataType_t key);
+
+void SeekNode(Stack *stk, TreeNode *node, TreeNode **ret_node, TreeDataType_t key);
 
 #endif

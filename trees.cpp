@@ -167,6 +167,7 @@ TreeErrs_t CreateNodeFromText(Tree *tree,
 
     ++(*iterator);
 
+
     if (*text->lines_ptr[*iterator] == '(')
     {
         ++(*iterator);
@@ -234,6 +235,55 @@ TreeErrs_t SwapNodesData(TreeNode *node_lhs, TreeNode *node_rhs)
     node_rhs->data = tmp;
 
     return kTreeSuccess;
+}
+
+//==============================================================================
+
+TreeNode *FindNode(Stack *stk, TreeNode *node, TreeDataType_t key)
+{
+    TreeNode *curr_node = nullptr;
+
+    SeekNode(stk, node, &curr_node, key);
+
+    return curr_node;
+}
+
+//==============================================================================
+
+void SeekNode(Stack *stk, TreeNode *node, TreeNode **ret_node, TreeDataType_t key)
+{
+    int pop_value = 0;
+
+    if (strcmp(node->data, key) == 0)
+    {
+        *ret_node = node;
+
+        return;
+    }
+
+    if (node->left != nullptr && *ret_node == nullptr)
+    {
+        Push(stk, kGoLeft);
+
+        SeekNode(stk, node->left, ret_node, key);
+
+        if (*ret_node == nullptr)
+        {
+            Pop(stk, &pop_value);
+        }
+    }
+
+    if (node->left != nullptr && *ret_node == nullptr)
+    {
+        Push(stk, kGoRight);
+
+        SeekNode(stk, node->right, ret_node, key);
+
+        if (*ret_node == nullptr)
+        {
+            Pop(stk, &pop_value);
+        }
+    }
 }
 
 //==============================================================================

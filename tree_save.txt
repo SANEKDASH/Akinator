@@ -5,7 +5,15 @@
  "part_of_body" (
  "metal" (
  "rugatelstvo" (
+ "gay" (
+ "python" (
  "hairs" null null )
+ (
+ "bimbambam" null null )
+ )
+ (
+ "abubachir" null null )
+ )
  (
  "pidarasina" null null )
  )
@@ -34,7 +42,11 @@
  "lol" (
  "huy" null null )
  (
- "Aphelios, the weapon of faithful" null null )
+ "Hoe" (
+ "Aphelios" null null )
+ (
+ "Evelynn" null null )
+ )
  )
  (
  "bb" null null )

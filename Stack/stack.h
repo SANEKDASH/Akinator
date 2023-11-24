@@ -1,7 +1,8 @@
 #ifndef STACKHEADER
 #define STACKHEADER
 
-#ifdef DEBUG
+#define DEBUG
+
 struct LogInfo
 {
     const char *stack_name;
@@ -11,6 +12,7 @@ struct LogInfo
     const char *date;
     const char *time;
 };
+#ifdef DEBUG
 
 #define STACKDUMP(stk) StackDump(stk, {#stk, __LINE__, __func__, __FILE__, __DATE__, __TIME__})
 #define INIT_LOG InitLog()

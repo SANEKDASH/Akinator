@@ -5,6 +5,20 @@
 
 const size_t kMaxCmdLen = 64;
 
+static void PrintDefinition(const Tree *tree,
+                            const Stack *stk,
+                            const TreeNode *node);
+
+static AkinatorCmd_t PrintDifference(const Tree *tree);
+
+static void PrintDiff(const Tree *tree,
+                      const TreeNode *lhs_node,
+                      const TreeNode *rhs_node,
+                      const Stack *lhs_stk,
+                      const Stack *rhs_stk);
+
+
+
 //==============================================================================
 
 AkinatorCmd_t GetCommand()
@@ -37,6 +51,20 @@ AkinatorCmd_t CallInterface(Tree *tree)
             case kStartGuessing:
             {
                 CallGuesser(tree, tree->root);
+
+                break;
+            }
+
+            case kDefinition:
+            {
+                GiveDefinition(tree);
+
+                break;
+            }
+
+            case kDifference:
+            {
+                PrintDifference(tree);
 
                 break;
             }
@@ -86,7 +114,7 @@ AkinatorCmd_t CallGuesser(Tree *tree, TreeNode *node)
         if (status == kYesAnswer)
         {
             printf(">>You can:\n"
-                   "\t-Print definition of this object (use command \"definition\") or\n"
+                   "\t-Print definition of this object (use command \"def\") or\n"
                    "\t-Quit (use command \"quit\")"
                    "\t-Suck dick\n>>");
 
@@ -162,4 +190,121 @@ AkinatorCmd_t AddMember(Tree *tree, TreeNode *node)
     }
 }
 
+//==============================================================================
+
+AkinatorCmd_t GiveDefinition(Tree *tree)
+{
+    printf(">>Enter the name of the object whose definition you are interested in\n>>");
+
+    static char obj_name[kMaxCmdLen] = {0};
+
+    scanf("%s", obj_name);
+
+    Stack stk = {0};
+
+    StackInit(&stk);
+
+    TreeNode *node = FindNode(&stk, tree->root, obj_name);
+
+    PrintDefinition(tree, &stk, node);
+
+    StackDtor(&stk);
+
+}
+
+//==============================================================================
+
+static void PrintDefinition(const Tree *tree, const Stack *stk, const TreeNode *node)
+{
+    TreeNode *curr_node = tree->root;
+
+    printf(">>Definition of %s:\n", node->data);
+
+    for (size_t i = 0; i < stk->stack_data.size; i++)
+    {
+        if (stk->stack_data.data[i] == kGoLeft)
+        {
+            printf("\t-Not %s\n", curr_node->data);
+
+            curr_node = curr_node->left;
+        }
+        else
+        {
+            printf("\t-%s\n", curr_node->data);
+
+            curr_node = curr_node->right;
+        }
+    }
+}
+
+//==============================================================================
+
+static AkinatorCmd_t PrintDifference(const Tree *tree)
+{
+    static char lhs_obj_name[kMaxCmdLen] = {0};
+    static char rhs_obj_name[kMaxCmdLen] = {0};
+
+    printf(">>Enter the names of the objects whose difference you are interested in\n>>");
+
+    scanf("%s %s", lhs_obj_name, rhs_obj_name);
+
+    Stack lhs_stk = {0};
+    Stack rhs_stk = {0};
+
+    StackInit(&lhs_stk);
+    StackInit(&rhs_stk);
+
+    TreeNode *lhs_node = FindNode(&lhs_stk, tree->root, lhs_obj_name);
+    TreeNode *rhs_node = FindNode(&rhs_stk, tree->root, rhs_obj_name);
+
+    PrintDiff(tree, lhs_node, rhs_node, &lhs_stk, &rhs_stk);
+
+    StackDtor(&lhs_stk);
+    StackDtor(&rhs_stk);
+
+    return kAkinatorSuccess;
+}
+
+//==============================================================================
+
+static void PrintDiff(const Tree *tree,
+                      const TreeNode *lhs_node,
+                      const TreeNode *rhs_node,
+                      const Stack *lhs_stk,
+                      const Stack *rhs_stk)
+{
+    size_t i = 0;
+    TreeNode *curr_node = tree->root;
+
+    printf(">>\"%s\" and \"%s\" are similar at points:\n", lhs_node->data, rhs_node->data);
+
+    for ( ; i < lhs_stk->stack_data.size &&
+            i < lhs_stk->stack_data.size &&
+            lhs_stk->stack_data.data[i] == rhs_stk->stack_data.data[i];
+            i++)
+    {
+            printf("\t-%s\n", curr_node->data);
+
+            if (lhs_stk->stack_data.data[i] == kGoLeft)
+            {
+                curr_node = curr_node->left;
+            }
+            else
+            {
+                curr_node = curr_node->right;
+            }
+    }
+
+    if (lhs_stk->stack_data.data[i] == kGoLeft)
+    {
+        printf(">>\"%s\" is not %s\n", lhs_node->data, curr_node->data);
+    }
+
+    if (rhs_stk->stack_data.data[i] == kGoLeft)
+    {
+        printf(">>\"%s\" is not %s\n", rhs_node->data, curr_node->data);
+    }
+
+    printf(">>");
+}
 //==============================================================================
