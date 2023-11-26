@@ -1,0 +1,884 @@
+
+--------------------------------------------------
+TXLib предупреждает:
+
+Программа: D:\postuplenie\treniruys\Trees\Tree.exe,
+
+ВНЕЗАПНО: Нарушение доступа к памяти.
+
+#1: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при вяполнении кода по адресу 0x76E29820 в функции strlen(). Попятка прочестя данняе по адресу NULL в модуле C:\Windows\System32\msvcrt.dll. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+#1: TXLib [Ver: 00173a, Rev: 171, Date: 2022-07-23 02:08:28 +0400], Instance: 0x004F72FC (32-bit), Flags: CmdrE0, Thread: 0xEF0 (Main). 
+
+--------------------------------------------------
+Стек вязовов:
+
+# 0 0x76E29820 in C:\Windows\System32\msvcrt.dll: strlen()
+
+# 1 0x0041DA89 in D:\postuplenie\treniruys\Trees\Tree.exe: CreateNodeFromText() at D:/postuplenie/treniruys/Trees/trees.cpp (205):
+
+    203:     TreeErrs_t status = kTreeSuccess;
+    204: 
+=>  205:     status = NodeCtor(tree, parent_node, curr_node, text->lines_ptr[*iterator]);
+    206: 
+    207:     if (status != kTreeSuccess)
+
+# 2 0x0041D979 in D:\postuplenie\treniruys\Trees\Tree.exe: ReadTreeOutOfFile() at D:/postuplenie/treniruys/Trees/trees.cpp (180):
+
+    178:     size_t iterator = 1; //???
+    179: 
+=>  180:     if (CreateNodeFromText(tree, nullptr, &tree->root, &tree_text, &iterator) != kTreeSuccess)
+    181:     {
+    182:         printf("ReatTreeOutOfFile() failed to read tree");
+
+# 3 0x0041C489 in D:\postuplenie\treniruys\Trees\Tree.exe: main() at D:/postuplenie/treniruys/Trees/main.cpp (21):
+
+     19:     TreeCtor(&tree, "blyadina");
+     20: 
+=>   21:     ReadTreeOutOfFile(&tree);
+     22: 
+     23:     CallInterface(&tree);
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 171, Date: 2022-07-23 02:08:28 +0400]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	d:\postuplenie\codeblocks\mingw\include\txlib.h
+Compiled:	Nov 26 2023 17:06:49, GNU g++ 4.8.1, std=201103L, MinGW Runtime 3.20, 32-bit, Debug
+Started:	Nov 26 2023 19:13:15
+
+Run file:	D:\postuplenie\treniruys\Trees\Tree.exe
+Directory:	D:\postuplenie\treniruys\Trees
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib соболезнует...
+
+Программа: D:\postuplenie\treniruys\Trees\Tree.exe,
+
+ВНЕЗАПНО: signal (11, 0x00): SIGSEGV: Доступ по неверному указателю. Ставяте ассертя! 
+
+Нарушение доступа к памяти.
+
+#1: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при вяполнении кода по адресу 0x76E29820 в функции strlen(). Попятка прочестя данняе по адресу NULL в модуле C:\Windows\System32\msvcrt.dll. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+С помощяю функции signal() вя можете сами обработатя эту ошибку.
+
+#2: TXLib [Ver: 00173a, Rev: 171, Date: 2022-07-23 02:08:28 +0400], Instance: 0x004F72FC (32-bit), Flags: CmdrE0, Thread: 0xEF0 (Main). 
+
+--------------------------------------------------
+Стек вязовов:
+
+# 0 0x76E29820 in C:\Windows\System32\msvcrt.dll: strlen()
+
+# 1 0x0041DA89 in D:\postuplenie\treniruys\Trees\Tree.exe: CreateNodeFromText() at D:/postuplenie/treniruys/Trees/trees.cpp (205):
+
+    203:     TreeErrs_t status = kTreeSuccess;
+    204: 
+=>  205:     status = NodeCtor(tree, parent_node, curr_node, text->lines_ptr[*iterator]);
+    206: 
+    207:     if (status != kTreeSuccess)
+
+# 2 0x0041D979 in D:\postuplenie\treniruys\Trees\Tree.exe: ReadTreeOutOfFile() at D:/postuplenie/treniruys/Trees/trees.cpp (180):
+
+    178:     size_t iterator = 1; //???
+    179: 
+=>  180:     if (CreateNodeFromText(tree, nullptr, &tree->root, &tree_text, &iterator) != kTreeSuccess)
+    181:     {
+    182:         printf("ReatTreeOutOfFile() failed to read tree");
+
+# 3 0x0041C489 in D:\postuplenie\treniruys\Trees\Tree.exe: main() at D:/postuplenie/treniruys/Trees/main.cpp (21):
+
+     19:     TreeCtor(&tree, "blyadina");
+     20: 
+=>   21:     ReadTreeOutOfFile(&tree);
+     22: 
+     23:     CallInterface(&tree);
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 171, Date: 2022-07-23 02:08:28 +0400]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	d:\postuplenie\codeblocks\mingw\include\txlib.h
+Compiled:	Nov 26 2023 17:06:49, GNU g++ 4.8.1, std=201103L, MinGW Runtime 3.20, 32-bit, Debug
+Started:	Nov 26 2023 19:13:15
+
+Run file:	D:\postuplenie\treniruys\Trees\Tree.exe
+Directory:	D:\postuplenie\treniruys\Trees
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib предупреждает:
+
+Программа: D:\postuplenie\treniruys\Trees\Tree.exe,
+
+ВНЕЗАПНО: Нарушение доступа к памяти.
+
+#1: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при вяполнении кода по адресу 0x76E29820 в функции strlen(). Попятка прочестя данняе по адресу NULL в модуле C:\Windows\System32\msvcrt.dll. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+#1: TXLib [Ver: 00173a, Rev: 171, Date: 2022-07-23 02:08:28 +0400], Instance: 0x004F82FC (32-bit), Flags: CmdrE0, Thread: 0x48B0 (Main). 
+
+--------------------------------------------------
+Стек вязовов:
+
+# 0 0x76E29820 in C:\Windows\System32\msvcrt.dll: strlen()
+
+# 1 0x0041DA87 in D:\postuplenie\treniruys\Trees\Tree.exe: CreateNodeFromText() at D:/postuplenie/treniruys/Trees/trees.cpp (205):
+
+    203:     TreeErrs_t status = kTreeSuccess;
+    204: 
+=>  205:     status = NodeCtor(tree, parent_node, curr_node, text->lines_ptr[*iterator]);
+    206: 
+    207:     if (status != kTreeSuccess)
+
+# 2 0x0041D977 in D:\postuplenie\treniruys\Trees\Tree.exe: ReadTreeOutOfFile() at D:/postuplenie/treniruys/Trees/trees.cpp (180):
+
+    178:     size_t iterator = 1; //???
+    179: 
+=>  180:     if (CreateNodeFromText(tree, nullptr, &tree->root, &tree_text, &iterator) != kTreeSuccess)
+    181:     {
+    182:         printf("ReatTreeOutOfFile() failed to read tree");
+
+# 3 0x0041C489 in D:\postuplenie\treniruys\Trees\Tree.exe: main() at D:/postuplenie/treniruys/Trees/main.cpp (21):
+
+     19:     TreeCtor(&tree, "blyadina");
+     20: 
+=>   21:     ReadTreeOutOfFile(&tree);
+     22: 
+     23:     CallInterface(&tree);
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 171, Date: 2022-07-23 02:08:28 +0400]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	d:\postuplenie\codeblocks\mingw\include\txlib.h
+Compiled:	Nov 26 2023 17:06:49, GNU g++ 4.8.1, std=201103L, MinGW Runtime 3.20, 32-bit, Debug
+Started:	Nov 26 2023 22:12:16
+
+Run file:	D:\postuplenie\treniruys\Trees\Tree.exe
+Directory:	D:\postuplenie\treniruys\Trees
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib соболезнует...
+
+Программа: D:\postuplenie\treniruys\Trees\Tree.exe,
+
+ВНЕЗАПНО: signal (11, 0x00): SIGSEGV: Доступ по неверному указателю. Ставяте ассертя! 
+
+Нарушение доступа к памяти.
+
+#1: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при вяполнении кода по адресу 0x76E29820 в функции strlen(). Попятка прочестя данняе по адресу NULL в модуле C:\Windows\System32\msvcrt.dll. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+С помощяю функции signal() вя можете сами обработатя эту ошибку.
+
+#2: TXLib [Ver: 00173a, Rev: 171, Date: 2022-07-23 02:08:28 +0400], Instance: 0x004F82FC (32-bit), Flags: CmdrE0, Thread: 0x48B0 (Main). 
+
+--------------------------------------------------
+Стек вязовов:
+
+# 0 0x76E29820 in C:\Windows\System32\msvcrt.dll: strlen()
+
+# 1 0x0041DA87 in D:\postuplenie\treniruys\Trees\Tree.exe: CreateNodeFromText() at D:/postuplenie/treniruys/Trees/trees.cpp (205):
+
+    203:     TreeErrs_t status = kTreeSuccess;
+    204: 
+=>  205:     status = NodeCtor(tree, parent_node, curr_node, text->lines_ptr[*iterator]);
+    206: 
+    207:     if (status != kTreeSuccess)
+
+# 2 0x0041D977 in D:\postuplenie\treniruys\Trees\Tree.exe: ReadTreeOutOfFile() at D:/postuplenie/treniruys/Trees/trees.cpp (180):
+
+    178:     size_t iterator = 1; //???
+    179: 
+=>  180:     if (CreateNodeFromText(tree, nullptr, &tree->root, &tree_text, &iterator) != kTreeSuccess)
+    181:     {
+    182:         printf("ReatTreeOutOfFile() failed to read tree");
+
+# 3 0x0041C489 in D:\postuplenie\treniruys\Trees\Tree.exe: main() at D:/postuplenie/treniruys/Trees/main.cpp (21):
+
+     19:     TreeCtor(&tree, "blyadina");
+     20: 
+=>   21:     ReadTreeOutOfFile(&tree);
+     22: 
+     23:     CallInterface(&tree);
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 171, Date: 2022-07-23 02:08:28 +0400]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	d:\postuplenie\codeblocks\mingw\include\txlib.h
+Compiled:	Nov 26 2023 17:06:49, GNU g++ 4.8.1, std=201103L, MinGW Runtime 3.20, 32-bit, Debug
+Started:	Nov 26 2023 22:12:16
+
+Run file:	D:\postuplenie\treniruys\Trees\Tree.exe
+Directory:	D:\postuplenie\treniruys\Trees
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib предупреждает:
+
+Программа: D:\postuplenie\treniruys\Trees\Tree.exe,
+
+ВНЕЗАПНО: Нарушение доступа к памяти.
+
+#1: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при вяполнении кода по адресу 0x0041DC10 в функции CreateNodeFromBrackets() в файле D:/postuplenie/treniruys/Trees/trees.cpp на строке 263. Попятка записатя данняе по адресу 0x00000008 в модуле D:\postuplenie\treniruys\Trees\Tree.exe. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+#1: TXLib [Ver: 00173a, Rev: 171, Date: 2022-07-23 02:08:28 +0400], Instance: 0x004F92FC (32-bit), Flags: CmdrE0, Thread: 0x3958 (Main), GetLastError(): 183 (Невозможно создать файл, так как он уже существует). 
+
+--------------------------------------------------
+Стек вязовов:
+
+# 0 0x0041DC10 in D:\postuplenie\treniruys\Trees\Tree.exe: CreateNodeFromBrackets() at D:/postuplenie/treniruys/Trees/trees.cpp (263):
+
+    261:         if (strcmp(text->lines_ptr[*iterator], "null") == 0)
+    262:         {
+=>  263:             *node = nullptr;
+    264:         }
+    265:         else
+
+# 1 0x0041DAF8 in D:\postuplenie\treniruys\Trees\Tree.exe: CreateNodeFromText() at D:/postuplenie/treniruys/Trees/trees.cpp (218):
+
+    216:     ++(*iterator);
+    217: 
+=>  218:     status = CreateNodeFromBrackets(tree, *curr_node, &(*curr_node)->left, text, iterator);
+    219: 
+    220:     if (status != kTreeSuccess)
+
+# 2 0x0041DBBA in D:\postuplenie\treniruys\Trees\Tree.exe: CreateNodeFromBrackets() at D:/postuplenie/treniruys/Trees/trees.cpp (252):
+
+    250:         ++(*iterator);
+    251: 
+=>  252:         TreeErrs_t status = CreateNodeFromText(tree, parent_node, node, text, iterator);
+    253: 
+    254:         if (status != kTreeSuccess)
+
+# 3 0x0041DAF8 in D:\postuplenie\treniruys\Trees\Tree.exe: CreateNodeFromText() at D:/postuplenie/treniruys/Trees/trees.cpp (218):
+
+    216:     ++(*iterator);
+    217: 
+=>  218:     status = CreateNodeFromBrackets(tree, *curr_node, &(*curr_node)->left, text, iterator);
+    219: 
+    220:     if (status != kTreeSuccess)
+
+# 4 0x0041D977 in D:\postuplenie\treniruys\Trees\Tree.exe: ReadTreeOutOfFile() at D:/postuplenie/treniruys/Trees/trees.cpp (180):
+
+    178:     size_t iterator = 0;
+    179: 
+=>  180:     if (CreateNodeFromText(tree, nullptr, &tree->root, &tree_text, &iterator) != kTreeSuccess)
+    181:     {
+    182:         printf("ReatTreeOutOfFile() failed to read tree");
+
+# 5 0x0041C489 in D:\postuplenie\treniruys\Trees\Tree.exe: main() at D:/postuplenie/treniruys/Trees/main.cpp (21):
+
+     19:     TreeCtor(&tree, "blyadina");
+     20: 
+=>   21:     ReadTreeOutOfFile(&tree);
+     22: 
+     23:     CallInterface(&tree);
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 171, Date: 2022-07-23 02:08:28 +0400]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	d:\postuplenie\codeblocks\mingw\include\txlib.h
+Compiled:	Nov 26 2023 17:06:49, GNU g++ 4.8.1, std=201103L, MinGW Runtime 3.20, 32-bit, Debug
+Started:	Nov 26 2023 22:37:44
+
+Run file:	D:\postuplenie\treniruys\Trees\Tree.exe
+Directory:	D:\postuplenie\treniruys\Trees
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib соболезнует...
+
+Программа: D:\postuplenie\treniruys\Trees\Tree.exe,
+
+ВНЕЗАПНО: signal (11, 0x00): SIGSEGV: Доступ по неверному указателю. Ставяте ассертя! 
+
+Нарушение доступа к памяти.
+
+#1: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при вяполнении кода по адресу 0x0041DC10 в функции CreateNodeFromBrackets() в файле D:/postuplenie/treniruys/Trees/trees.cpp на строке 263. Попятка записатя данняе по адресу 0x00000008 в модуле D:\postuplenie\treniruys\Trees\Tree.exe. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+С помощяю функции signal() вя можете сами обработатя эту ошибку.
+
+#2: TXLib [Ver: 00173a, Rev: 171, Date: 2022-07-23 02:08:28 +0400], Instance: 0x004F92FC (32-bit), Flags: CmdrE0, Thread: 0x3958 (Main), GetLastError(): 183 (Невозможно создать файл, так как он уже существует). 
+
+--------------------------------------------------
+Стек вязовов:
+
+# 0 0x0041DC10 in D:\postuplenie\treniruys\Trees\Tree.exe: CreateNodeFromBrackets() at D:/postuplenie/treniruys/Trees/trees.cpp (263):
+
+    261:         if (strcmp(text->lines_ptr[*iterator], "null") == 0)
+    262:         {
+=>  263:             *node = nullptr;
+    264:         }
+    265:         else
+
+# 1 0x0041DAF8 in D:\postuplenie\treniruys\Trees\Tree.exe: CreateNodeFromText() at D:/postuplenie/treniruys/Trees/trees.cpp (218):
+
+    216:     ++(*iterator);
+    217: 
+=>  218:     status = CreateNodeFromBrackets(tree, *curr_node, &(*curr_node)->left, text, iterator);
+    219: 
+    220:     if (status != kTreeSuccess)
+
+# 2 0x0041DBBA in D:\postuplenie\treniruys\Trees\Tree.exe: CreateNodeFromBrackets() at D:/postuplenie/treniruys/Trees/trees.cpp (252):
+
+    250:         ++(*iterator);
+    251: 
+=>  252:         TreeErrs_t status = CreateNodeFromText(tree, parent_node, node, text, iterator);
+    253: 
+    254:         if (status != kTreeSuccess)
+
+# 3 0x0041DAF8 in D:\postuplenie\treniruys\Trees\Tree.exe: CreateNodeFromText() at D:/postuplenie/treniruys/Trees/trees.cpp (218):
+
+    216:     ++(*iterator);
+    217: 
+=>  218:     status = CreateNodeFromBrackets(tree, *curr_node, &(*curr_node)->left, text, iterator);
+    219: 
+    220:     if (status != kTreeSuccess)
+
+# 4 0x0041D977 in D:\postuplenie\treniruys\Trees\Tree.exe: ReadTreeOutOfFile() at D:/postuplenie/treniruys/Trees/trees.cpp (180):
+
+    178:     size_t iterator = 0;
+    179: 
+=>  180:     if (CreateNodeFromText(tree, nullptr, &tree->root, &tree_text, &iterator) != kTreeSuccess)
+    181:     {
+    182:         printf("ReatTreeOutOfFile() failed to read tree");
+
+# 5 0x0041C489 in D:\postuplenie\treniruys\Trees\Tree.exe: main() at D:/postuplenie/treniruys/Trees/main.cpp (21):
+
+     19:     TreeCtor(&tree, "blyadina");
+     20: 
+=>   21:     ReadTreeOutOfFile(&tree);
+     22: 
+     23:     CallInterface(&tree);
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 171, Date: 2022-07-23 02:08:28 +0400]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	d:\postuplenie\codeblocks\mingw\include\txlib.h
+Compiled:	Nov 26 2023 17:06:49, GNU g++ 4.8.1, std=201103L, MinGW Runtime 3.20, 32-bit, Debug
+Started:	Nov 26 2023 22:37:44
+
+Run file:	D:\postuplenie\treniruys\Trees\Tree.exe
+Directory:	D:\postuplenie\treniruys\Trees
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib предупреждает:
+
+Программа: D:\postuplenie\treniruys\Trees\Tree.exe,
+
+ВНЕЗАПНО: Нарушение доступа к памяти.
+
+#1: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при вяполнении кода по адресу 0x0041DC10 в функции CreateNodeFromBrackets() в файле D:/postuplenie/treniruys/Trees/trees.cpp на строке 263. Попятка записатя данняе по адресу 0x00000008 в модуле D:\postuplenie\treniruys\Trees\Tree.exe. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+#1: TXLib [Ver: 00173a, Rev: 171, Date: 2022-07-23 02:08:28 +0400], Instance: 0x004F92FC (32-bit), Flags: CmdrE0, Thread: 0x1CA4 (Main), GetLastError(): 183 (Невозможно создать файл, так как он уже существует). 
+
+--------------------------------------------------
+Стек вязовов:
+
+# 0 0x0041DC10 in D:\postuplenie\treniruys\Trees\Tree.exe: CreateNodeFromBrackets() at D:/postuplenie/treniruys/Trees/trees.cpp (263):
+
+    261:         if (strcmp(text->lines_ptr[*iterator], "null") == 0)
+    262:         {
+=>  263:             *node = nullptr;
+    264:         }
+    265:         else
+
+# 1 0x0041DAF8 in D:\postuplenie\treniruys\Trees\Tree.exe: CreateNodeFromText() at D:/postuplenie/treniruys/Trees/trees.cpp (218):
+
+    216:     ++(*iterator);
+    217: 
+=>  218:     status = CreateNodeFromBrackets(tree, *curr_node, &(*curr_node)->left, text, iterator);
+    219: 
+    220:     if (status != kTreeSuccess)
+
+# 2 0x0041DBBA in D:\postuplenie\treniruys\Trees\Tree.exe: CreateNodeFromBrackets() at D:/postuplenie/treniruys/Trees/trees.cpp (252):
+
+    250:         ++(*iterator);
+    251: 
+=>  252:         TreeErrs_t status = CreateNodeFromText(tree, parent_node, node, text, iterator);
+    253: 
+    254:         if (status != kTreeSuccess)
+
+# 3 0x0041DAF8 in D:\postuplenie\treniruys\Trees\Tree.exe: CreateNodeFromText() at D:/postuplenie/treniruys/Trees/trees.cpp (218):
+
+    216:     ++(*iterator);
+    217: 
+=>  218:     status = CreateNodeFromBrackets(tree, *curr_node, &(*curr_node)->left, text, iterator);
+    219: 
+    220:     if (status != kTreeSuccess)
+
+# 4 0x0041D977 in D:\postuplenie\treniruys\Trees\Tree.exe: ReadTreeOutOfFile() at D:/postuplenie/treniruys/Trees/trees.cpp (180):
+
+    178:     size_t iterator = 0;
+    179: 
+=>  180:     if (CreateNodeFromText(tree, nullptr, &tree->root, &tree_text, &iterator) != kTreeSuccess)
+    181:     {
+    182:         printf("ReatTreeOutOfFile() failed to read tree");
+
+# 5 0x0041C489 in D:\postuplenie\treniruys\Trees\Tree.exe: main() at D:/postuplenie/treniruys/Trees/main.cpp (21):
+
+     19:     TreeCtor(&tree, "blyadina");
+     20: 
+=>   21:     ReadTreeOutOfFile(&tree);
+     22: 
+     23:     CallInterface(&tree);
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 171, Date: 2022-07-23 02:08:28 +0400]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	d:\postuplenie\codeblocks\mingw\include\txlib.h
+Compiled:	Nov 26 2023 17:06:49, GNU g++ 4.8.1, std=201103L, MinGW Runtime 3.20, 32-bit, Debug
+Started:	Nov 26 2023 22:38:01
+
+Run file:	D:\postuplenie\treniruys\Trees\Tree.exe
+Directory:	D:\postuplenie\treniruys\Trees
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib соболезнует...
+
+Программа: D:\postuplenie\treniruys\Trees\Tree.exe,
+
+ВНЕЗАПНО: signal (11, 0x00): SIGSEGV: Доступ по неверному указателю. Ставяте ассертя! 
+
+Нарушение доступа к памяти.
+
+#1: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при вяполнении кода по адресу 0x0041DC10 в функции CreateNodeFromBrackets() в файле D:/postuplenie/treniruys/Trees/trees.cpp на строке 263. Попятка записатя данняе по адресу 0x00000008 в модуле D:\postuplenie\treniruys\Trees\Tree.exe. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+С помощяю функции signal() вя можете сами обработатя эту ошибку.
+
+#2: TXLib [Ver: 00173a, Rev: 171, Date: 2022-07-23 02:08:28 +0400], Instance: 0x004F92FC (32-bit), Flags: CmdrE0, Thread: 0x1CA4 (Main), GetLastError(): 183 (Невозможно создать файл, так как он уже существует). 
+
+--------------------------------------------------
+Стек вязовов:
+
+# 0 0x0041DC10 in D:\postuplenie\treniruys\Trees\Tree.exe: CreateNodeFromBrackets() at D:/postuplenie/treniruys/Trees/trees.cpp (263):
+
+    261:         if (strcmp(text->lines_ptr[*iterator], "null") == 0)
+    262:         {
+=>  263:             *node = nullptr;
+    264:         }
+    265:         else
+
+# 1 0x0041DAF8 in D:\postuplenie\treniruys\Trees\Tree.exe: CreateNodeFromText() at D:/postuplenie/treniruys/Trees/trees.cpp (218):
+
+    216:     ++(*iterator);
+    217: 
+=>  218:     status = CreateNodeFromBrackets(tree, *curr_node, &(*curr_node)->left, text, iterator);
+    219: 
+    220:     if (status != kTreeSuccess)
+
+# 2 0x0041DBBA in D:\postuplenie\treniruys\Trees\Tree.exe: CreateNodeFromBrackets() at D:/postuplenie/treniruys/Trees/trees.cpp (252):
+
+    250:         ++(*iterator);
+    251: 
+=>  252:         TreeErrs_t status = CreateNodeFromText(tree, parent_node, node, text, iterator);
+    253: 
+    254:         if (status != kTreeSuccess)
+
+# 3 0x0041DAF8 in D:\postuplenie\treniruys\Trees\Tree.exe: CreateNodeFromText() at D:/postuplenie/treniruys/Trees/trees.cpp (218):
+
+    216:     ++(*iterator);
+    217: 
+=>  218:     status = CreateNodeFromBrackets(tree, *curr_node, &(*curr_node)->left, text, iterator);
+    219: 
+    220:     if (status != kTreeSuccess)
+
+# 4 0x0041D977 in D:\postuplenie\treniruys\Trees\Tree.exe: ReadTreeOutOfFile() at D:/postuplenie/treniruys/Trees/trees.cpp (180):
+
+    178:     size_t iterator = 0;
+    179: 
+=>  180:     if (CreateNodeFromText(tree, nullptr, &tree->root, &tree_text, &iterator) != kTreeSuccess)
+    181:     {
+    182:         printf("ReatTreeOutOfFile() failed to read tree");
+
+# 5 0x0041C489 in D:\postuplenie\treniruys\Trees\Tree.exe: main() at D:/postuplenie/treniruys/Trees/main.cpp (21):
+
+     19:     TreeCtor(&tree, "blyadina");
+     20: 
+=>   21:     ReadTreeOutOfFile(&tree);
+     22: 
+     23:     CallInterface(&tree);
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 171, Date: 2022-07-23 02:08:28 +0400]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	d:\postuplenie\codeblocks\mingw\include\txlib.h
+Compiled:	Nov 26 2023 17:06:49, GNU g++ 4.8.1, std=201103L, MinGW Runtime 3.20, 32-bit, Debug
+Started:	Nov 26 2023 22:38:01
+
+Run file:	D:\postuplenie\treniruys\Trees\Tree.exe
+Directory:	D:\postuplenie\treniruys\Trees
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib предупреждает:
+
+Программа: D:\postuplenie\treniruys\Trees\Tree.exe,
+
+ВНЕЗАПНО: Нарушение доступа к памяти.
+
+#1: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при вяполнении кода по адресу 0x0041DC10 в функции CreateNodeFromBrackets() в файле D:/postuplenie/treniruys/Trees/trees.cpp на строке 263. Попятка записатя данняе по адресу 0x00000008 в модуле D:\postuplenie\treniruys\Trees\Tree.exe. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+#1: TXLib [Ver: 00173a, Rev: 171, Date: 2022-07-23 02:08:28 +0400], Instance: 0x004F92FC (32-bit), Flags: CmdrE0, Thread: 0x4BD8 (Main), GetLastError(): 183 (Невозможно создать файл, так как он уже существует). 
+
+--------------------------------------------------
+Стек вязовов:
+
+# 0 0x0041DC10 in D:\postuplenie\treniruys\Trees\Tree.exe: CreateNodeFromBrackets() at D:/postuplenie/treniruys/Trees/trees.cpp (263):
+
+    261:         if (strcmp(text->lines_ptr[*iterator], "null") == 0)
+    262:         {
+=>  263:             *node = nullptr;
+    264:         }
+    265:         else
+
+# 1 0x0041DAF8 in D:\postuplenie\treniruys\Trees\Tree.exe: CreateNodeFromText() at D:/postuplenie/treniruys/Trees/trees.cpp (218):
+
+    216:     ++(*iterator);
+    217: 
+=>  218:     status = CreateNodeFromBrackets(tree, *curr_node, &(*curr_node)->left, text, iterator);
+    219: 
+    220:     if (status != kTreeSuccess)
+
+# 2 0x0041DBBA in D:\postuplenie\treniruys\Trees\Tree.exe: CreateNodeFromBrackets() at D:/postuplenie/treniruys/Trees/trees.cpp (252):
+
+    250:         ++(*iterator);
+    251: 
+=>  252:         TreeErrs_t status = CreateNodeFromText(tree, parent_node, node, text, iterator);
+    253: 
+    254:         if (status != kTreeSuccess)
+
+# 3 0x0041DAF8 in D:\postuplenie\treniruys\Trees\Tree.exe: CreateNodeFromText() at D:/postuplenie/treniruys/Trees/trees.cpp (218):
+
+    216:     ++(*iterator);
+    217: 
+=>  218:     status = CreateNodeFromBrackets(tree, *curr_node, &(*curr_node)->left, text, iterator);
+    219: 
+    220:     if (status != kTreeSuccess)
+
+# 4 0x0041D977 in D:\postuplenie\treniruys\Trees\Tree.exe: ReadTreeOutOfFile() at D:/postuplenie/treniruys/Trees/trees.cpp (180):
+
+    178:     size_t iterator = 0;
+    179: 
+=>  180:     if (CreateNodeFromText(tree, nullptr, &tree->root, &tree_text, &iterator) != kTreeSuccess)
+    181:     {
+    182:         printf("ReatTreeOutOfFile() failed to read tree");
+
+# 5 0x0041C489 in D:\postuplenie\treniruys\Trees\Tree.exe: main() at D:/postuplenie/treniruys/Trees/main.cpp (21):
+
+     19:     TreeCtor(&tree, "blyadina");
+     20: 
+=>   21:     ReadTreeOutOfFile(&tree);
+     22: 
+     23:     CallInterface(&tree);
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 171, Date: 2022-07-23 02:08:28 +0400]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	d:\postuplenie\codeblocks\mingw\include\txlib.h
+Compiled:	Nov 26 2023 17:06:49, GNU g++ 4.8.1, std=201103L, MinGW Runtime 3.20, 32-bit, Debug
+Started:	Nov 26 2023 22:38:06
+
+Run file:	D:\postuplenie\treniruys\Trees\Tree.exe
+Directory:	D:\postuplenie\treniruys\Trees
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib соболезнует...
+
+Программа: D:\postuplenie\treniruys\Trees\Tree.exe,
+
+ВНЕЗАПНО: signal (11, 0x00): SIGSEGV: Доступ по неверному указателю. Ставяте ассертя! 
+
+Нарушение доступа к памяти.
+
+#1: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при вяполнении кода по адресу 0x0041DC10 в функции CreateNodeFromBrackets() в файле D:/postuplenie/treniruys/Trees/trees.cpp на строке 263. Попятка записатя данняе по адресу 0x00000008 в модуле D:\postuplenie\treniruys\Trees\Tree.exe. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+С помощяю функции signal() вя можете сами обработатя эту ошибку.
+
+#2: TXLib [Ver: 00173a, Rev: 171, Date: 2022-07-23 02:08:28 +0400], Instance: 0x004F92FC (32-bit), Flags: CmdrE0, Thread: 0x4BD8 (Main), GetLastError(): 183 (Невозможно создать файл, так как он уже существует). 
+
+--------------------------------------------------
+Стек вязовов:
+
+# 0 0x0041DC10 in D:\postuplenie\treniruys\Trees\Tree.exe: CreateNodeFromBrackets() at D:/postuplenie/treniruys/Trees/trees.cpp (263):
+
+    261:         if (strcmp(text->lines_ptr[*iterator], "null") == 0)
+    262:         {
+=>  263:             *node = nullptr;
+    264:         }
+    265:         else
+
+# 1 0x0041DAF8 in D:\postuplenie\treniruys\Trees\Tree.exe: CreateNodeFromText() at D:/postuplenie/treniruys/Trees/trees.cpp (218):
+
+    216:     ++(*iterator);
+    217: 
+=>  218:     status = CreateNodeFromBrackets(tree, *curr_node, &(*curr_node)->left, text, iterator);
+    219: 
+    220:     if (status != kTreeSuccess)
+
+# 2 0x0041DBBA in D:\postuplenie\treniruys\Trees\Tree.exe: CreateNodeFromBrackets() at D:/postuplenie/treniruys/Trees/trees.cpp (252):
+
+    250:         ++(*iterator);
+    251: 
+=>  252:         TreeErrs_t status = CreateNodeFromText(tree, parent_node, node, text, iterator);
+    253: 
+    254:         if (status != kTreeSuccess)
+
+# 3 0x0041DAF8 in D:\postuplenie\treniruys\Trees\Tree.exe: CreateNodeFromText() at D:/postuplenie/treniruys/Trees/trees.cpp (218):
+
+    216:     ++(*iterator);
+    217: 
+=>  218:     status = CreateNodeFromBrackets(tree, *curr_node, &(*curr_node)->left, text, iterator);
+    219: 
+    220:     if (status != kTreeSuccess)
+
+# 4 0x0041D977 in D:\postuplenie\treniruys\Trees\Tree.exe: ReadTreeOutOfFile() at D:/postuplenie/treniruys/Trees/trees.cpp (180):
+
+    178:     size_t iterator = 0;
+    179: 
+=>  180:     if (CreateNodeFromText(tree, nullptr, &tree->root, &tree_text, &iterator) != kTreeSuccess)
+    181:     {
+    182:         printf("ReatTreeOutOfFile() failed to read tree");
+
+# 5 0x0041C489 in D:\postuplenie\treniruys\Trees\Tree.exe: main() at D:/postuplenie/treniruys/Trees/main.cpp (21):
+
+     19:     TreeCtor(&tree, "blyadina");
+     20: 
+=>   21:     ReadTreeOutOfFile(&tree);
+     22: 
+     23:     CallInterface(&tree);
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 171, Date: 2022-07-23 02:08:28 +0400]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	d:\postuplenie\codeblocks\mingw\include\txlib.h
+Compiled:	Nov 26 2023 17:06:49, GNU g++ 4.8.1, std=201103L, MinGW Runtime 3.20, 32-bit, Debug
+Started:	Nov 26 2023 22:38:06
+
+Run file:	D:\postuplenie\treniruys\Trees\Tree.exe
+Directory:	D:\postuplenie\treniruys\Trees
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib предупреждает:
+
+Программа: D:\postuplenie\treniruys\Trees\Tree.exe,
+
+ВНЕЗАПНО: Нарушение доступа к памяти.
+
+#1: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при вяполнении кода по адресу 0x0041DC10 в функции CreateNodeFromBrackets() в файле D:/postuplenie/treniruys/Trees/trees.cpp на строке 263. Попятка записатя данняе по адресу 0x00000008 в модуле D:\postuplenie\treniruys\Trees\Tree.exe. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+#1: TXLib [Ver: 00173a, Rev: 171, Date: 2022-07-23 02:08:28 +0400], Instance: 0x004F92FC (32-bit), Flags: CmdrE0, Thread: 0x4B30 (Main), GetLastError(): 183 (Невозможно создать файл, так как он уже существует). 
+
+--------------------------------------------------
+Стек вязовов:
+
+# 0 0x0041DC10 in D:\postuplenie\treniruys\Trees\Tree.exe: CreateNodeFromBrackets() at D:/postuplenie/treniruys/Trees/trees.cpp (263):
+
+    261:         {
+    262:             *node = nullptr;
+=>  263:         }
+    264:         else
+    265:         {
+
+# 1 0x0041DAF8 in D:\postuplenie\treniruys\Trees\Tree.exe: CreateNodeFromText() at D:/postuplenie/treniruys/Trees/trees.cpp (218):
+
+    216:         ++(*iterator);
+    217:     }
+=>  218: 
+    219:     status = CreateNodeFromBrackets(tree, *curr_node, &(*curr_node)->left, text, iterator);
+    220: 
+
+# 2 0x0041DBBA in D:\postuplenie\treniruys\Trees\Tree.exe: CreateNodeFromBrackets() at D:/postuplenie/treniruys/Trees/trees.cpp (252):
+
+    250:     {
+    251:         TreeErrs_t status = CreateNodeFromText(tree, parent_node, node, text, iterator);
+=>  252: 
+    253:         if (status != kTreeSuccess)
+    254:         {
+
+# 3 0x0041DAF8 in D:\postuplenie\treniruys\Trees\Tree.exe: CreateNodeFromText() at D:/postuplenie/treniruys/Trees/trees.cpp (218):
+
+    216:         ++(*iterator);
+    217:     }
+=>  218: 
+    219:     status = CreateNodeFromBrackets(tree, *curr_node, &(*curr_node)->left, text, iterator);
+    220: 
+
+# 4 0x0041D977 in D:\postuplenie\treniruys\Trees\Tree.exe: ReadTreeOutOfFile() at D:/postuplenie/treniruys/Trees/trees.cpp (180):
+
+    178:     size_t iterator = 0;
+    179: 
+=>  180:     if (CreateNodeFromText(tree, nullptr, &tree->root, &tree_text, &iterator) != kTreeSuccess)
+    181:     {
+    182:         printf("ReatTreeOutOfFile() failed to read tree");
+
+# 5 0x0041C489 in D:\postuplenie\treniruys\Trees\Tree.exe: main() at D:/postuplenie/treniruys/Trees/main.cpp (21):
+
+     19:     TreeCtor(&tree, "blyadina");
+     20: 
+=>   21:     ReadTreeOutOfFile(&tree);
+     22: 
+     23:     CallInterface(&tree);
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 171, Date: 2022-07-23 02:08:28 +0400]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	d:\postuplenie\codeblocks\mingw\include\txlib.h
+Compiled:	Nov 26 2023 17:06:49, GNU g++ 4.8.1, std=201103L, MinGW Runtime 3.20, 32-bit, Debug
+Started:	Nov 26 2023 22:40:30
+
+Run file:	D:\postuplenie\treniruys\Trees\Tree.exe
+Directory:	D:\postuplenie\treniruys\Trees
+
+--------------------------------------------------
+
+--------------------------------------------------
+TXLib соболезнует...
+
+Программа: D:\postuplenie\treniruys\Trees\Tree.exe,
+
+ВНЕЗАПНО: signal (11, 0x00): SIGSEGV: Доступ по неверному указателю. Ставяте ассертя! 
+
+Нарушение доступа к памяти.
+
+#1: Исключение EXCEPTION_ACCESS_VIOLATION (0xC0000005) при вяполнении кода по адресу 0x0041DC10 в функции CreateNodeFromBrackets() в файле D:/postuplenie/treniruys/Trees/trees.cpp на строке 263. Попятка записатя данняе по адресу 0x00000008 в модуле D:\postuplenie\treniruys\Trees\Tree.exe. Спасибо _txVectoredExceptionHandler(), что сообщил. Люблю его <3
+
+С помощяю функции signal() вя можете сами обработатя эту ошибку.
+
+#2: TXLib [Ver: 00173a, Rev: 171, Date: 2022-07-23 02:08:28 +0400], Instance: 0x004F92FC (32-bit), Flags: CmdrE0, Thread: 0x4B30 (Main), GetLastError(): 183 (Невозможно создать файл, так как он уже существует). 
+
+--------------------------------------------------
+Стек вязовов:
+
+# 0 0x0041DC10 in D:\postuplenie\treniruys\Trees\Tree.exe: CreateNodeFromBrackets() at D:/postuplenie/treniruys/Trees/trees.cpp (263):
+
+    261:         {
+    262:             *node = nullptr;
+=>  263:         }
+    264:         else
+    265:         {
+
+# 1 0x0041DAF8 in D:\postuplenie\treniruys\Trees\Tree.exe: CreateNodeFromText() at D:/postuplenie/treniruys/Trees/trees.cpp (218):
+
+    216:         ++(*iterator);
+    217:     }
+=>  218: 
+    219:     status = CreateNodeFromBrackets(tree, *curr_node, &(*curr_node)->left, text, iterator);
+    220: 
+
+# 2 0x0041DBBA in D:\postuplenie\treniruys\Trees\Tree.exe: CreateNodeFromBrackets() at D:/postuplenie/treniruys/Trees/trees.cpp (252):
+
+    250:     {
+    251:         TreeErrs_t status = CreateNodeFromText(tree, parent_node, node, text, iterator);
+=>  252: 
+    253:         if (status != kTreeSuccess)
+    254:         {
+
+# 3 0x0041DAF8 in D:\postuplenie\treniruys\Trees\Tree.exe: CreateNodeFromText() at D:/postuplenie/treniruys/Trees/trees.cpp (218):
+
+    216:         ++(*iterator);
+    217:     }
+=>  218: 
+    219:     status = CreateNodeFromBrackets(tree, *curr_node, &(*curr_node)->left, text, iterator);
+    220: 
+
+# 4 0x0041D977 in D:\postuplenie\treniruys\Trees\Tree.exe: ReadTreeOutOfFile() at D:/postuplenie/treniruys/Trees/trees.cpp (180):
+
+    178:     size_t iterator = 0;
+    179: 
+=>  180:     if (CreateNodeFromText(tree, nullptr, &tree->root, &tree_text, &iterator) != kTreeSuccess)
+    181:     {
+    182:         printf("ReatTreeOutOfFile() failed to read tree");
+
+# 5 0x0041C489 in D:\postuplenie\treniruys\Trees\Tree.exe: main() at D:/postuplenie/treniruys/Trees/main.cpp (21):
+
+     19:     TreeCtor(&tree, "blyadina");
+     20: 
+=>   21:     ReadTreeOutOfFile(&tree);
+     22: 
+     23:     CallInterface(&tree);
+
+--------------------------------------------------
+Developed with:
+
+The Dumb Artist Library (TX Library)
+TXLib [Ver: 00173a, Rev: 171, Date: 2022-07-23 02:08:28 +0400]
+Copyright (C) Ded (Ilya Dedinsky, http://txlib.ru) <mail@txlib.ru>
+See license on: http://txlib.ru
+
+TXLib file:	d:\postuplenie\codeblocks\mingw\include\txlib.h
+Compiled:	Nov 26 2023 17:06:49, GNU g++ 4.8.1, std=201103L, MinGW Runtime 3.20, 32-bit, Debug
+Started:	Nov 26 2023 22:40:30
+
+Run file:	D:\postuplenie\treniruys\Trees\Tree.exe
+Directory:	D:\postuplenie\treniruys\Trees
+
+--------------------------------------------------

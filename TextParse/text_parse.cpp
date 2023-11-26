@@ -1,5 +1,7 @@
 #include "text_parse.h"
 
+//==============================================================================
+
 void SkipSpaces(char **line)
 {
     while ((**line == ' ' || **line == '\t') && **line != '\0')
@@ -7,6 +9,8 @@ void SkipSpaces(char **line)
         *((*line)++) = '\0';
     }
 }
+
+//==============================================================================
 
 void TextDtor(Text *text)
 {
@@ -19,7 +23,7 @@ void TextDtor(Text *text)
     text->lines_count = 0;
 }
 
-
+//==============================================================================
 
 size_t GetFileSize(FILE *ptr_file)
 {
@@ -30,7 +34,7 @@ size_t GetFileSize(FILE *ptr_file)
     return  file_info.st_size;
 }
 
-
+//==============================================================================
 
 TextErrs_t ReadTextFromFile(Text *text, const char *file_name)
 {
@@ -76,7 +80,7 @@ TextErrs_t ReadTextFromFile(Text *text, const char *file_name)
     return kSuccess;
 }
 
-
+//==============================================================================
 
 size_t SplitBufIntoWords(char *buf)
 {
@@ -119,7 +123,7 @@ size_t SplitBufIntoWords(char *buf)
     return lines_count;
 }
 
-
+//==============================================================================
 
 void FillText(Text *text)
 {
@@ -150,7 +154,7 @@ void FillText(Text *text)
 
 }
 
-
+//==============================================================================
 
 void PrintTextInFile(FILE *output_file, Text *text)
 {
@@ -159,3 +163,47 @@ void PrintTextInFile(FILE *output_file, Text *text)
         fprintf(output_file, "%s\n", *(text->lines_ptr + i));
     }
 }
+
+//==============================================================================
+
+TextErrs_t GetStr(char *string, size_t max_size)
+{
+    int i = 0;
+
+    int c = 0;
+
+    bool BufferOverflowStatus = false;
+
+    while ((c = getchar()) != '\n')
+    {
+        if (i < max_size - 1)
+        {
+            if (c != EOF)
+            {
+                string[i++] = (char) c;
+            }
+            else
+            {
+                return kEOF;
+            }
+        }
+        else
+        {
+            BufferOverflowStatus = true;
+        }
+    }
+
+    if (BufferOverflowStatus)
+    {
+        return kBufferOverflow;
+    }
+
+    if (i > 0)
+    {
+        string[i] = '\0';
+    }
+
+    return kSuccess;;
+}
+
+//==============================================================================

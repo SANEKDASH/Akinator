@@ -14,8 +14,10 @@ typedef enum
     kAllocError     = 2,
     kFreeError      = 3,
     kCloseError     = 4,
-    kReadingError   = 11,
-    kReallocError   = 12,
+    kReadingError   = 5,
+    kReallocError   = 6,
+    kBufferOverflow = 7,
+    kEOF            = 8,
 } TextErrs_t;
 
 struct Text
@@ -41,5 +43,7 @@ void TextDtor(Text *text);
 
 void PrintTextInFile(FILE *output_file,
                      Text *text);
+
+TextErrs_t GetStr(char *command_string, size_t max_size);
 
 #endif

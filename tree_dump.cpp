@@ -15,11 +15,9 @@ static const char * const log_file_name = "tree.dmp.html";
 
 static void LogPrintTree(TreeNode *node, FILE *dot_file);
 
-static void LogPrintRelations(TreeNode *node, FILE *dot_file);
-
 //================================================================================================
 
-void BeginTreeGraphDump()
+void InitTreeGraphDump()
 {
     system("rm -f *.svg");
     system("rm -f *.png");
@@ -52,9 +50,9 @@ void EndTreeGraphDump()
 
 //================================================================================================
 
-TreeErrs_t GraphDumpList(Tree *tree)
+TreeErrs_t GraphDumpTree(Tree *tree)
 {
-    FILE *dot_file = fopen("list.dmp.dot", "w");
+    FILE *dot_file = fopen("tree.dmp.dot", "w");
 
     #define LOG_PRINT(...) fprintf(dot_file, __VA_ARGS__)
 
@@ -77,14 +75,16 @@ TreeErrs_t GraphDumpList(Tree *tree)
 
 
     LogPrintTree(tree->root, dot_file);
-    LogPrintRelations(tree->root, dot_file);
+    LogPrintEdges(tree->root, dot_file);
 
 
     LOG_PRINT("\n\n}");
 
     fclose(dot_file);
 
-    sprintf(cmd_command, "dot -Tpng list.dmp.dot -o graphdump%d."
+    system("iconv -f CP1251 -t UTF-8 tree.dmp.dot > ctree.dmp.dot");
+
+    sprintf(cmd_command, "dot -Tpng ctree.dmp.dot -o graphdump%d."
                          #ifdef SVG
                          "svg"
                          #endif
@@ -123,7 +123,8 @@ TreeErrs_t GraphDumpList(Tree *tree)
 
 static void LogPrintTree(TreeNode *node, FILE *dot_file)
 {
-    LOG_PRINT("node%p [style = filled, fillcolor = \"green\", shape = Mrecord, label = \"data: %s | {parent: %p | pointer: %p | left: %p | right: %p} \"]\n",
+    LOG_PRINT("node%p [style = filled, fillcolor = \"green\", shape = Mrecord, label = "
+              "\"data: %s | {parent: %p | pointer: %p | left: %p | right: %p} \"]\n",
               node,
               node->data,
               node->parent,
@@ -144,7 +145,7 @@ static void LogPrintTree(TreeNode *node, FILE *dot_file)
 
 //================================================================================================
 
-static void LogPrintRelations(TreeNode *node, FILE *dot_file)
+void LogPrintEdges(TreeNode *node, FILE *dot_file)
 {
     if (node->left != nullptr)
     {
@@ -169,13 +170,14 @@ static void LogPrintRelations(TreeNode *node, FILE *dot_file)
 
     if (node->left != nullptr)
     {
-        LogPrintRelations(node->left, dot_file);
+        LogPrintEdges(node->left, dot_file);
     }
 
     if (node->right != nullptr)
     {
-        LogPrintRelations(node->right, dot_file);
+        LogPrintEdges(node->right, dot_file);
     }
 }
 
 //================================================================================================
+

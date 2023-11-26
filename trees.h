@@ -11,7 +11,9 @@ typedef enum
     kTreeSuccess,
     kFailedAllocation,
     kFailedToOpenFile,
-    kFailedToFined,
+    kFailedToFind,
+    kFailedToReadText,
+    kFailedToReadTree,
 } TreeErrs_t;
 
 struct TreeNode
@@ -49,21 +51,13 @@ TreeErrs_t TreeDtor(TreeNode *root);
 
 TreeErrs_t PrintTree(const TreeNode *root, FILE *output_file);
 
-TreeErrs_t PrintTreeInFile(Tree *tree);
+TreeErrs_t PrintTreeInFile(Tree *tree, const char *file_name);
 
-TreeErrs_t ReadTreeFromFile(Tree *tree);
-
-TreeErrs_t CreateNodeFromText(Tree *tree,
-                              TreeNode *parent_node,
-                              TreeNode **curr_node,
-                              Text *text,
-                              size_t *iterator);
+TreeErrs_t ReadTreeOutOfFile(Tree *tree);
 
 TreeErrs_t SwapNodesData(TreeNode *node_lhs,
                          TreeNode *node_rhs);
 
 TreeNode *FindNode(Stack *stk, TreeNode *node, TreeDataType_t key);
-
-void SeekNode(Stack *stk, TreeNode *node, TreeNode **ret_node, TreeDataType_t key);
 
 #endif

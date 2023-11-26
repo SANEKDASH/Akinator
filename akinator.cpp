@@ -1,9 +1,14 @@
 #include <stdio.h>
 
+#include "TextParse/text_parse.h"
 #include "akinator.h"
 #include "tree_dump.h"
+#include "trees.h"
+#include "debug/debug.h"
 
-const size_t kMaxCmdLen = 64;
+static const char  *kSaveFileName = "tree_save.txt";
+
+static const size_t kMaxCmdLen = 64;
 
 static void PrintDefinition(const Tree *tree,
                             const Stack *stk,
@@ -17,7 +22,9 @@ static void PrintDiff(const Tree *tree,
                       const Stack *lhs_stk,
                       const Stack *rhs_stk);
 
+static TreeErrs_t ShowTree(Tree *tree);
 
+static void PrintNodes(TreeNode *node, FILE *output_file);
 
 //==============================================================================
 
@@ -25,7 +32,14 @@ AkinatorCmd_t GetCommand()
 {
     static char command_string[kMaxCmdLen] = {0};
 
-    scanf("%s", command_string);
+    *command_string = 0;
+
+    GetStr(command_string, kMaxCmdLen);
+
+    if (*command_string == '\0')
+    {
+        return kNullCmd;
+    }
 
     for (size_t i = 0; i < kCmdCount; i++)
     {
@@ -42,6 +56,10 @@ AkinatorCmd_t GetCommand()
 
 AkinatorCmd_t CallInterface(Tree *tree)
 {
+    CHECK(tree);
+
+    printf(">> Вас приветствует Акинатор. Напишите команду \"помощь\" чтобы увидеть список команд.\n>> ");
+
     AkinatorCmd_t status = kUnknownCommand;
 
     while ((status = GetCommand()) != kQuit)
@@ -69,12 +87,38 @@ AkinatorCmd_t CallInterface(Tree *tree)
                 break;
             }
 
+            case kNullCmd:
+            {
+                printf(">> ");
+
+                break;
+            }
+
+            case kPrint:
+            {
+                ShowTree(tree);
+
+                break;
+            }
+
+            case kUnknownCommand:
+            {
+                printf(">> Неизвесная команда, используйте команду \"помощь\" для того, чтобы увидеть список команд.\n >>");
+
+                break;
+            }
+
+            case kSave:
+            {
+                PrintTreeInFile(tree, kSaveFileName);
+
+                break;
+            }
+
+            case kFailedToFindObject:
             case kQuit:
-            case kSaveTree:
-            case kReviveTree:
             case kYesAnswer:
             case kAkinatorSuccess:
-            case kUnknownCommand:
             case kRightAnswer:
             case kWrongAnswer:
             case kUnknownCommandInThisScope:
@@ -89,11 +133,10 @@ AkinatorCmd_t CallInterface(Tree *tree)
                 break;
             }
         }
+        printf(">> ");
     }
 
-    printf(">>GoodBye");
-
-    PrintTreeInFile(tree);
+    printf(">> Досвидания.");
 
     return kAkinatorSuccess;
 }
@@ -102,21 +145,42 @@ AkinatorCmd_t CallInterface(Tree *tree)
 
 AkinatorCmd_t CallGuesser(Tree *tree, TreeNode *node)
 {
-
     AkinatorCmd_t status = kUnknownCommand;
 
-    if (node->left == nullptr && node->right == nullptr)
+    printf(">> Акинатор начинает работу.\n");
+
+    while (node->left != nullptr && node->right != nullptr)
     {
-        printf(">>The answer is %s?\n>>", node->data);
+        printf(">> %s?\n>> ", node->data);
 
         status = GetCommand();
 
         if (status == kYesAnswer)
         {
-            printf(">>You can:\n"
-                   "\t-Print definition of this object (use command \"def\") or\n"
-                   "\t-Quit (use command \"quit\")"
-                   "\t-Suck dick\n>>");
+            node = node->right;
+        }
+        else if (status == kNoAnswer)
+        {
+            node = node->left;
+        }
+        else
+        {
+            printf(">> Неизвестная команда\n");
+
+            return kUnknownCommandInThisScope;
+        }
+    }
+
+    if (node->left == nullptr && node->right == nullptr)
+    {
+        printf(">> %s это т(а)от, кого вы искали?\n>> ", node->data);
+
+        status = GetCommand();
+
+        if (status == kYesAnswer)
+        {
+            printf(">> Замечательно!\n"
+                   ">> Вы можете продолжить работу.\n");
 
             return kAkinatorSuccess;
         }
@@ -132,69 +196,53 @@ AkinatorCmd_t CallGuesser(Tree *tree, TreeNode *node)
         }
     }
 
-    printf(">>%s?\n>>", node->data);
-
-    status = GetCommand();
-
-    if (status == kYesAnswer)
-    {
-        return CallGuesser(tree, node->right);
-    }
-    else if (status == kNoAnswer)
-    {
-        return CallGuesser(tree, node->left);
-    }
-    else
-    {
-        printf(">>Wrong command\n");
-
-        return kUnknownCommandInThisScope;
-    }
+    return kAkinatorSuccess;
 }
 
 //==============================================================================
 
 AkinatorCmd_t AddMember(Tree *tree, TreeNode *node)
 {
-    printf(">>Do you want to add an answer?\n>>");
+    printf(">> Хотите добавить объект?\n>> ");
 
     AkinatorCmd_t status = GetCommand();
 
     if (status == kYesAnswer)
     {
-        char new_member_str[kMaxCmdLen] = {0};
+        static char new_member_str[kMaxCmdLen] = {0};
+        *new_member_str = 0;
 
-        printf(">>Write the answer you wanted to see\n>>");
+        printf(">> Напишите имя объекта, который хотите добавить\n>> ");
 
-        scanf("%s", new_member_str);
+        GetStr(new_member_str, kMaxCmdLen);
 
-        NodeCtor(tree,
-                 node,
-                 &node->right, new_member_str);
+        NodeCtor(tree, node, &node->right, new_member_str);
 
-        printf(">>What is the difference between this answers?\n");
+        printf(">> Чем отличается \"%s\" от \"%s\"?\n>> ",
+               node->data,
+               new_member_str);
 
-        scanf("%s", new_member_str);
+        GetStr(new_member_str, kMaxCmdLen);
 
-        NodeCtor(tree,
-                 node,
-                 &node->left, new_member_str);
+        NodeCtor(tree, node, &node->left, new_member_str);
 
         SwapNodesData(node, node->left);
 
-        GraphDumpList(tree);
+        printf(">> Новый объект успешно добавлен!\n");
+
+        GRAPH_DUMP_TREE(tree);
     }
-    else
-    {
-        return kAkinatorSuccess;
-    }
+
+    return kAkinatorSuccess;
 }
 
 //==============================================================================
 
 AkinatorCmd_t GiveDefinition(Tree *tree)
 {
-    printf(">>Enter the name of the object whose definition you are interested in\n>>");
+    CHECK(tree);
+
+    printf(">> Введите имя объекта, определение которого хотите увидеть\n>> ");
 
     static char obj_name[kMaxCmdLen] = {0};
 
@@ -206,45 +254,66 @@ AkinatorCmd_t GiveDefinition(Tree *tree)
 
     TreeNode *node = FindNode(&stk, tree->root, obj_name);
 
-    PrintDefinition(tree, &stk, node);
+    if (node == nullptr)
+    {
+        StackDtor(&stk);
+
+        printf(">> Не удалось найти \"%s\"в базе.\n", obj_name);
+
+        return kFailedToFindObject;
+    }
+
+    if (node != nullptr)
+    {
+        PrintDefinition(tree, &stk, node);
+    }
 
     StackDtor(&stk);
 
+    return kAkinatorSuccess;
 }
 
 //==============================================================================
 
 static void PrintDefinition(const Tree *tree, const Stack *stk, const TreeNode *node)
 {
+    CHECK(tree);
+    CHECK(stk);
+    CHECK(node);
+
     TreeNode *curr_node = tree->root;
 
-    printf(">>Definition of %s:\n", node->data);
+    printf("> %s: ", node->data);
 
     for (size_t i = 0; i < stk->stack_data.size; i++)
     {
         if (stk->stack_data.data[i] == kGoLeft)
         {
-            printf("\t-Not %s\n", curr_node->data);
+            printf("не %s, ", curr_node->data);
 
             curr_node = curr_node->left;
         }
         else
         {
-            printf("\t-%s\n", curr_node->data);
+            printf("%s, ", curr_node->data);
 
             curr_node = curr_node->right;
         }
     }
+
+    printf("\b\b.\n");
 }
 
 //==============================================================================
 
 static AkinatorCmd_t PrintDifference(const Tree *tree)
 {
+    CHECK(tree);
+
     static char lhs_obj_name[kMaxCmdLen] = {0};
     static char rhs_obj_name[kMaxCmdLen] = {0};
 
-    printf(">>Enter the names of the objects whose difference you are interested in\n>>");
+    printf(">> Введите названия двух объектов, различия которых вы хотите увидеть.\n>> ");
 
     scanf("%s %s", lhs_obj_name, rhs_obj_name);
 
@@ -257,7 +326,19 @@ static AkinatorCmd_t PrintDifference(const Tree *tree)
     TreeNode *lhs_node = FindNode(&lhs_stk, tree->root, lhs_obj_name);
     TreeNode *rhs_node = FindNode(&rhs_stk, tree->root, rhs_obj_name);
 
-    PrintDiff(tree, lhs_node, rhs_node, &lhs_stk, &rhs_stk);
+    if (lhs_node == nullptr)
+    {
+        printf(">> Не удалось найти \"%s\" в базе.\n", lhs_obj_name);
+    }
+    if (rhs_node == nullptr)
+    {
+        printf(">> Не удалось найти \"%s\" в базе.\n", rhs_obj_name);
+    }
+
+    if (lhs_node != nullptr && rhs_node != nullptr)
+    {
+        PrintDiff(tree, lhs_node, rhs_node, &lhs_stk, &rhs_stk);
+    }
 
     StackDtor(&lhs_stk);
     StackDtor(&rhs_stk);
@@ -273,17 +354,29 @@ static void PrintDiff(const Tree *tree,
                       const Stack *lhs_stk,
                       const Stack *rhs_stk)
 {
+    CHECK(tree);
+    CHECK(lhs_node);
+    CHECK(rhs_node);
+    CHECK(lhs_stk);
+    CHECK(rhs_stk);
+
     size_t i = 0;
+
     TreeNode *curr_node = tree->root;
 
-    printf(">>\"%s\" and \"%s\" are similar at points:\n", lhs_node->data, rhs_node->data);
+    printf(">> \"%s\" и \"%s\" схожи тем, что ", lhs_node->data, rhs_node->data);
 
     for ( ; i < lhs_stk->stack_data.size &&
             i < lhs_stk->stack_data.size &&
             lhs_stk->stack_data.data[i] == rhs_stk->stack_data.data[i];
             i++)
     {
-            printf("\t-%s\n", curr_node->data);
+            if (lhs_stk->stack_data.data[i] == 0)
+            {
+                printf("не ");
+            }
+
+            printf("%s, ", curr_node->data);
 
             if (lhs_stk->stack_data.data[i] == kGoLeft)
             {
@@ -295,16 +388,103 @@ static void PrintDiff(const Tree *tree,
             }
     }
 
-    if (lhs_stk->stack_data.data[i] == kGoLeft)
+    printf("\b\b.\n");
+
+    printf(">> Но %s в отличии от %s ", lhs_node->data, rhs_node->data);
+
+    for (size_t j = i; j < lhs_stk->stack_data.size; j++)
     {
-        printf(">>\"%s\" is not %s\n", lhs_node->data, curr_node->data);
+        if (lhs_stk->stack_data.data[i] == 0)
+        {
+            printf("не ");
+        }
+
+        printf("%s, ", curr_node->data);
+
+        if (lhs_stk->stack_data.data[i] == kGoLeft)
+        {
+            curr_node = curr_node->left;
+        }
+        else
+        {
+            curr_node = curr_node->right;
+        }
     }
 
-    if (rhs_stk->stack_data.data[i] == kGoLeft)
-    {
-        printf(">>\"%s\" is not %s\n", rhs_node->data, curr_node->data);
-    }
-
-    printf(">>");
+    printf("\b\b.\n");
 }
+
+//==============================================================================
+
+static TreeErrs_t ShowTree(Tree *tree)
+{
+    CHECK(tree);
+
+    FILE *dot_file = fopen("tree_demo.dot", "w");
+
+    if (dot_file == nullptr)
+    {
+        perror("ShowTree() failed to open output_file");
+
+        return kFailedToOpenFile;
+    }
+
+    #define LOG_PRINT(...) fprintf(dot_file, __VA_ARGS__)
+
+    if (dot_file == nullptr)
+    {
+        perror("GraphDumpTree() failed to open dump file");
+
+        return kFailedToOpenFile;
+    }
+
+    LOG_PRINT("digraph List\n{\n"
+              "\trankdir = TB;\n"
+              "\tgraph [bgcolor = \"black\"]\n"
+              "\tnode[color =\"black\", fontsize=14, shape = Mrecord];\n"
+              "\tedge[color = \"red\", fontcolor = \"blue\",fontsize = 12];\n\n\n");
+
+
+    PrintNodes(tree->root, dot_file);
+    LogPrintEdges(tree->root, dot_file);
+
+
+    LOG_PRINT("\n\n}");
+
+    fclose(dot_file);
+
+    system("iconv -f CP1251 -t UTF-8 tree_demo.dot > rus_tree_demo.dot");
+
+    system("dot -Tpng rus_tree_demo.dot -o tree_demo.png");
+
+    system("tree_demo.png");
+
+    return kTreeSuccess;
+}
+
+//==============================================================================
+
+static void PrintNodes(TreeNode *node, FILE *output_file)
+{
+    CHECK(node);
+    CHECK(output_file);
+
+    fprintf(output_file,
+            "node%p [style = filled, fillcolor = \"green\", shape = Mrecord, label = "
+            "\"%s\"]\n",
+            node,
+            node->data);
+
+    if (node->left != nullptr)
+    {
+        PrintNodes(node->left, output_file);
+    }
+
+    if (node->right != nullptr)
+    {
+        PrintNodes(node->right, output_file);
+    }
+
+}
+
 //==============================================================================

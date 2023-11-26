@@ -3,10 +3,18 @@
 
 #include "trees.h"
 
-TreeErrs_t GraphDumpList(Tree *tree);
+#ifdef DEBUG
+#define GRAPH_DUMP_TREE(tree) GraphDumpTree(tree)
+#else
+#define GRAPH_DUMP_TREE ;
+#endif
+
+TreeErrs_t GraphDumpTree(Tree *tree);
 
 void EndTreeGraphDump();
 
-void BeginTreeGraphDump();
+void InitTreeGraphDump();
+
+void LogPrintEdges(TreeNode *node, FILE *dot_file);
 
 #endif

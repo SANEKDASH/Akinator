@@ -1,8 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define DEBUG
-
 #include "debug/color_print.h"
 #include "debug/debug.h"
 #include "TextParse/text_parse.h"
@@ -14,6 +12,23 @@ static const char *kTreeSaveFileName = "tree_save.txt";
 
 static const int kPoisonVal = 0xBADBABA;
 
+static TreeErrs_t CreateNodeFromText(Tree *tree,
+                                     TreeNode *parent_node,
+                                     TreeNode **curr_node,
+                                     Text *text,
+                                     size_t *iterator);
+
+static void SeekNode(Stack *stk,
+                     TreeNode *node,
+                     TreeNode **ret_node,
+                     TreeDataType_t key);
+
+static TreeErrs_t CreateNodeFromBrackets(Tree *tree,
+                                         TreeNode *parent_node,
+                                         TreeNode **curr_node,
+                                         Text *text,
+                                         size_t *iterator);
+
 //==============================================================================
 
 TreeErrs_t TreeCtor(Tree *tree, TreeDataType_t root_val)
@@ -24,7 +39,7 @@ TreeErrs_t TreeCtor(Tree *tree, TreeDataType_t root_val)
 
     if (tree->root == nullptr)
     {
-        perror("huy");
+        perror("TreeCtor() failed to allocate memory");
 
         return kFailedAllocation;
     }
@@ -47,8 +62,15 @@ TreeErrs_t TreeDtor(TreeNode *root)
 
     root->data = 0;
 
-    TreeDtor(root->left);
-    TreeDtor(root->right);
+    if (root->left != nullptr)
+    {
+        TreeDtor(root->left);
+    }
+
+    if (root->right != nullptr)
+    {
+        TreeDtor(root->right);
+    }
 
     free(root);
 
@@ -59,7 +81,7 @@ TreeErrs_t TreeDtor(TreeNode *root)
 
 TreeErrs_t NodeCtor(Tree *tree,
                     TreeNode *parent_node,
-                    TreeNode **node,
+                    TreeNode **node, //*
                     TreeDataType_t node_val)
 {
     CHECK(node);
@@ -72,12 +94,20 @@ TreeErrs_t NodeCtor(Tree *tree,
     }
 
     (*node)->data = (TreeDataType_t) calloc(strlen(node_val), sizeof(char));
+
+    if ((*node)->data == nullptr)
+    {
+        free(*node);
+
+        return kFailedAllocation;
+    }
+
     strcpy((*node)->data, node_val);
 
     (*node)->left   = (*node)->right = nullptr;
     (*node)->parent = parent_node;
 
-    GraphDumpList(tree);
+    GRAPH_DUMP_TREE(tree);
 
     return kTreeSuccess;
 }
@@ -88,14 +118,14 @@ TreeErrs_t PrintTree(const TreeNode *root, FILE *output_file)
 {
     CHECK(output_file);
 
-    if (!root)
+    if (root == nullptr)
     {
         fprintf(output_file,"null ");
 
         return kTreeSuccess;
     }
 
-    fprintf(output_file, "(\n ");
+    fprintf(output_file, "( ");
 
     fprintf(output_file, "\"%s\" ", root->data);
 
@@ -103,18 +133,18 @@ TreeErrs_t PrintTree(const TreeNode *root, FILE *output_file)
 
     PrintTree(root->right, output_file);
 
-    fprintf(output_file, ")\n ");
+    fprintf(output_file, ") ");
 
     return kTreeSuccess;
 }
 
 //==============================================================================
 
-TreeErrs_t PrintTreeInFile(Tree *tree)
+TreeErrs_t PrintTreeInFile(Tree *tree, const char *file_name)
 {
     CHECK(tree);
 
-    FILE *output_file = fopen(kTreeSaveFileName, "wb");
+    FILE *output_file = fopen(file_name, "wb");
 
     if (output_file == nullptr)
     {
@@ -130,90 +160,120 @@ TreeErrs_t PrintTreeInFile(Tree *tree)
 
 //==============================================================================
 
-TreeErrs_t ReadTreeFromFile(Tree *tree)
+TreeErrs_t ReadTreeOutOfFile(Tree *tree)
 {
     CHECK(tree);
 
     Text tree_text = {0};
 
-    ReadTextFromFile(&tree_text, kTreeSaveFileName);
+    if (ReadTextFromFile(&tree_text, kTreeSaveFileName) != kSuccess)
+    {
+        printf("\nReadTreeOutOfFile() failed to read text from file\n");
 
-    //PrintTextInFile(stdout, &tree_text);
+        return kFailedToReadText;
 
-    size_t iterator = 1;
+        TextDtor(&tree_text);
+    }
 
-    CreateNodeFromText(tree,
-                       nullptr,
-                       &tree->root, &tree_text, &iterator);
+    size_t iterator = 0;
+
+    if (CreateNodeFromText(tree, nullptr, &tree->root, &tree_text, &iterator) != kTreeSuccess)
+    {
+        printf("ReatTreeOutOfFile() failed to read tree");
+
+        return kFailedToReadTree;
+    }
 
     return kTreeSuccess;
 }
 
 //==============================================================================
 
-TreeErrs_t CreateNodeFromText(Tree *tree,
-                              TreeNode *parent_node,
-                              TreeNode **curr_node,
-                              Text *text,
-                              size_t *iterator)
+static TreeErrs_t CreateNodeFromText(Tree *tree,
+                                     TreeNode *parent_node,
+                                     TreeNode **curr_node,
+                                     Text *text,
+                                     size_t *iterator)
 {
     CHECK(tree);
     CHECK(curr_node);
     CHECK(iterator);
     CHECK(text);
 
-
-    NodeCtor(tree, parent_node, curr_node, text->lines_ptr[*iterator]);
-
-    ++(*iterator);
-
+    TreeErrs_t status = kTreeSuccess;
 
     if (*text->lines_ptr[*iterator] == '(')
     {
         ++(*iterator);
 
-        CreateNodeFromText(tree,
-                           *curr_node,
-                           &((*curr_node)->left), text, iterator);
-    }
-    else if (*text->lines_ptr[*iterator] != ')')
-    {
-        if (strcmp(text->lines_ptr[*iterator], "null") == 0)
+        status = NodeCtor(tree, parent_node, curr_node, text->lines_ptr[*iterator]);
+
+        if (status != kTreeSuccess)
         {
-            (*curr_node)->left = nullptr;
-        }
-        else
-        {
-            NodeCtor(tree, *curr_node, &(*curr_node)->left, text->lines_ptr[*iterator]);
+            return status;
         }
 
         ++(*iterator);
     }
 
-    if (*text->lines_ptr[*iterator] == '(')
-    {
-        ++(*iterator);
+    status = CreateNodeFromBrackets(tree, *curr_node, &(*curr_node)->left, text, iterator);
 
-        CreateNodeFromText(tree, *curr_node, &((*curr_node)->right), text, iterator);
-    }
-    else if (*text->lines_ptr[*iterator] != ')')
+    if (status != kTreeSuccess)
     {
-        if (strcmp(text->lines_ptr[*iterator], "null") == 0)
-        {
-           (*curr_node)->right = nullptr;
-        }
-        else
-        {
-            NodeCtor(tree, *curr_node, &(*curr_node)->right, text->lines_ptr[*iterator]);
-        }
-
-        ++(*iterator);
+        return status;
     }
+
+    status = CreateNodeFromBrackets(tree, *curr_node, &(*curr_node)->right, text, iterator);
+
+    if (status != kTreeSuccess)
+    {
+        return status;
+    }
+
     if (*text->lines_ptr[*iterator] == ')')
     {
-        ++(*iterator);
-
         return kTreeSuccess;
+    }
+
+    return kTreeSuccess;
+}
+
+//==============================================================================
+
+static TreeErrs_t CreateNodeFromBrackets(Tree *tree,
+                                         TreeNode *parent_node,
+                                         TreeNode **node,
+                                         Text *text,
+                                         size_t *iterator)
+{
+    if (*text->lines_ptr[*iterator] == '(')
+    {
+        TreeErrs_t status = CreateNodeFromText(tree, parent_node, node, text, iterator);
+
+        if (status != kTreeSuccess)
+        {
+            return status;
+        }
+
+        ++(*iterator);
+    }
+    else if (*text->lines_ptr[*iterator] != ')')
+    {
+        if (strcmp(text->lines_ptr[*iterator], "null") == 0)
+        {
+            *node = nullptr;
+        }
+        else
+        {
+            TreeErrs_t status = NodeCtor(tree, parent_node, node, text->lines_ptr[*iterator]);
+
+            if (status != kTreeSuccess)
+            {
+                return status;
+            }
+        }
+
+        ++(*iterator);
     }
 
     return kTreeSuccess;
@@ -250,8 +310,12 @@ TreeNode *FindNode(Stack *stk, TreeNode *node, TreeDataType_t key)
 
 //==============================================================================
 
-void SeekNode(Stack *stk, TreeNode *node, TreeNode **ret_node, TreeDataType_t key)
+static void SeekNode(Stack *stk, TreeNode *node, TreeNode **ret_node, TreeDataType_t key)
 {
+    CHECK(stk);
+    CHECK(node);
+    CHECK(ret_node);
+
     int pop_value = 0;
 
     if (strcmp(node->data, key) == 0)
@@ -261,6 +325,7 @@ void SeekNode(Stack *stk, TreeNode *node, TreeNode **ret_node, TreeDataType_t ke
         return;
     }
 
+    // prichesat
     if (node->left != nullptr && *ret_node == nullptr)
     {
         Push(stk, kGoLeft);
@@ -273,7 +338,7 @@ void SeekNode(Stack *stk, TreeNode *node, TreeNode **ret_node, TreeDataType_t ke
         }
     }
 
-    if (node->left != nullptr && *ret_node == nullptr)
+    if (node->right != nullptr && *ret_node == nullptr)
     {
         Push(stk, kGoRight);
 

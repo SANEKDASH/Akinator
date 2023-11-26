@@ -6,18 +6,20 @@
 typedef enum
 {
     kQuit,
-    kSaveTree,
-    kReviveTree,
     kStartGuessing,
     kDefinition,
     kDifference,
     kYesAnswer,
     kNoAnswer,
+    kPrint,
     kAkinatorSuccess,
     kUnknownCommand,
     kRightAnswer,
     kWrongAnswer,
+    kNullCmd,
+    kFailedToFindObject,
     kUnknownCommandInThisScope,
+    kSave,
 } AkinatorCmd_t;
 
 struct AkinatorCommand
@@ -30,14 +32,14 @@ static const size_t kCmdCount = 8;
 
 static AkinatorCommand AkinatorCommandsArray[kCmdCount] =
 {
-    kQuit,          "quit",
-    kSaveTree,      "save",
-    kReviveTree,    "revive",
-    kStartGuessing, "start",
-    kYesAnswer,     "yes",
-    kNoAnswer,      "no",
-    kDefinition,    "def",
-    kDifference,    "diff",
+    kQuit,          "выйти",
+    kPrint,         "выдать базу",
+    kStartGuessing, "начать",
+    kYesAnswer,     "да",
+    kNoAnswer,      "нет",
+    kDefinition,    "дать определение",
+    kDifference,    "различия",
+    kSave,          "сохранить",
 };
 
 AkinatorCmd_t CallGuesser(Tree *tree, TreeNode *node);
