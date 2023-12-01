@@ -12,26 +12,27 @@ static const char *kTreeSaveFileName = "tree_save.txt";
 
 static const int kPoisonVal = 0xBADBABA;
 
-static TreeErrs_t CreateNodeFromText(Tree *tree,
-                                     TreeNode *parent_node,
+static TreeErrs_t CreateNodeFromText(Tree      *tree,
+                                     TreeNode  *parent_node,
                                      TreeNode **curr_node,
-                                     Text *text,
-                                     size_t *iterator);
+                                     Text      *text,
+                                     size_t    *iterator);
 
-static void SeekNode(Stack *stk,
-                     TreeNode *node,
-                     TreeNode **ret_node,
-                     TreeDataType_t key);
+static void SeekNode(Stack           *stk,
+                     TreeNode        *node,
+                     TreeNode       **ret_node,
+                     TreeDataType_t   key);
 
-static TreeErrs_t CreateNodeFromBrackets(Tree *tree,
-                                         TreeNode *parent_node,
+static TreeErrs_t CreateNodeFromBrackets(Tree      *tree,
+                                         TreeNode  *parent_node,
                                          TreeNode **curr_node,
-                                         Text *text,
-                                         size_t *iterator);
+                                         Text      *text,
+                                         size_t    *iterator);
 
 //==============================================================================
 
-TreeErrs_t TreeCtor(Tree *tree, TreeDataType_t root_val)
+TreeErrs_t TreeCtor(Tree           *tree,
+                    TreeDataType_t  root_val)
 {
     CHECK(tree);
 
@@ -79,10 +80,10 @@ TreeErrs_t TreeDtor(TreeNode *root)
 
 //==============================================================================
 
-TreeErrs_t NodeCtor(Tree *tree,
-                    TreeNode *parent_node,
-                    TreeNode **node, //*
-                    TreeDataType_t node_val)
+TreeErrs_t NodeCtor(Tree            *tree,
+                    TreeNode        *parent_node,
+                    TreeNode       **node, //*
+                    TreeDataType_t   node_val)
 {
     CHECK(node);
 
@@ -114,7 +115,8 @@ TreeErrs_t NodeCtor(Tree *tree,
 
 //==============================================================================
 
-TreeErrs_t PrintTree(const TreeNode *root, FILE *output_file)
+TreeErrs_t PrintTree(const TreeNode *root,
+                     FILE           *output_file)
 {
     CHECK(output_file);
 
@@ -140,7 +142,8 @@ TreeErrs_t PrintTree(const TreeNode *root, FILE *output_file)
 
 //==============================================================================
 
-TreeErrs_t PrintTreeInFile(Tree *tree, const char *file_name)
+TreeErrs_t PrintTreeInFile(Tree       *tree,
+                           const char *file_name)
 {
     CHECK(tree);
 
@@ -189,11 +192,11 @@ TreeErrs_t ReadTreeOutOfFile(Tree *tree)
 
 //==============================================================================
 
-static TreeErrs_t CreateNodeFromText(Tree *tree,
-                                     TreeNode *parent_node,
+static TreeErrs_t CreateNodeFromText(Tree      *tree,
+                                     TreeNode  *parent_node,
                                      TreeNode **curr_node,
-                                     Text *text,
-                                     size_t *iterator)
+                                     Text      *text,
+                                     size_t    *iterator)
 {
     CHECK(tree);
     CHECK(curr_node);
@@ -240,11 +243,11 @@ static TreeErrs_t CreateNodeFromText(Tree *tree,
 
 //==============================================================================
 
-static TreeErrs_t CreateNodeFromBrackets(Tree *tree,
-                                         TreeNode *parent_node,
+static TreeErrs_t CreateNodeFromBrackets(Tree      *tree,
+                                         TreeNode  *parent_node,
                                          TreeNode **node,
-                                         Text *text,
-                                         size_t *iterator)
+                                         Text      *text,
+                                         size_t    *iterator)
 {
     if (*text->lines_ptr[*iterator] == '(')
     {
@@ -281,7 +284,8 @@ static TreeErrs_t CreateNodeFromBrackets(Tree *tree,
 
 //==============================================================================
 
-TreeErrs_t SwapNodesData(TreeNode *node_lhs, TreeNode *node_rhs)
+TreeErrs_t SwapNodesData(TreeNode *node_lhs,
+                         TreeNode *node_rhs)
 {
     TreeDataType_t tmp = nullptr;
 
@@ -299,7 +303,9 @@ TreeErrs_t SwapNodesData(TreeNode *node_lhs, TreeNode *node_rhs)
 
 //==============================================================================
 
-TreeNode *FindNode(Stack *stk, TreeNode *node, TreeDataType_t key)
+TreeNode *FindNode(Stack          *stk,
+                   TreeNode       *node,
+                   TreeDataType_t  key)
 {
     TreeNode *curr_node = nullptr;
 
@@ -310,7 +316,10 @@ TreeNode *FindNode(Stack *stk, TreeNode *node, TreeDataType_t key)
 
 //==============================================================================
 
-static void SeekNode(Stack *stk, TreeNode *node, TreeNode **ret_node, TreeDataType_t key)
+static void SeekNode(Stack           *stk,
+                     TreeNode        *node,
+                     TreeNode       **ret_node,
+                     TreeDataType_t   key)
 {
     CHECK(stk);
     CHECK(node);
@@ -325,7 +334,7 @@ static void SeekNode(Stack *stk, TreeNode *node, TreeNode **ret_node, TreeDataTy
         return;
     }
 
-    // prichesat
+    //prichesat
     if (node->left != nullptr && *ret_node == nullptr)
     {
         Push(stk, kGoLeft);

@@ -15,6 +15,7 @@ void EndTreeGraphDump();
 
 void InitTreeGraphDump();
 
-void LogPrintEdges(TreeNode *node, FILE *dot_file);
+void LogPrintEdges(TreeNode *node,
+                   FILE     *dot_file);
 
 #endif

@@ -5,26 +5,30 @@
 #include "tree_dump.h"
 #include "trees.h"
 #include "debug/debug.h"
+#include "debug/color_print.h"
 
 static const char  *kSaveFileName = "tree_save.txt";
 
 static const size_t kMaxCmdLen = 64;
 
-static void PrintDefinition(const Tree *tree,
-                            const Stack *stk,
+static void PrintDefinition(const Tree     *tree,
+                            const Stack    *stk,
                             const TreeNode *node);
 
-static AkinatorCmd_t PrintDifference(const Tree *tree);
+static AkinatorErrs_t PrintDifference(const Tree *tree);
 
-static void PrintDiff(const Tree *tree,
+static void PrintDiff(const Tree     *tree,
                       const TreeNode *lhs_node,
                       const TreeNode *rhs_node,
-                      const Stack *lhs_stk,
-                      const Stack *rhs_stk);
+                      const Stack    *lhs_stk,
+                      const Stack    *rhs_stk);
 
 static TreeErrs_t ShowTree(Tree *tree);
 
-static void PrintNodes(TreeNode *node, FILE *output_file);
+static void PrintNodes(TreeNode *node,
+                       FILE     *output_file);
+
+static void PrintHelp();
 
 //==============================================================================
 
@@ -54,11 +58,11 @@ AkinatorCmd_t GetCommand()
 
 //==============================================================================
 
-AkinatorCmd_t CallInterface(Tree *tree)
+AkinatorErrs_t CallInterface(Tree *tree)
 {
     CHECK(tree);
 
-    printf(">> Вас приветствует Акинатор. Напишите команду \"помощь\" чтобы увидеть список команд.\n>> ");
+    printf(">> Вас приветствует Акинатор. Напишите команду \"пом\" чтобы увидеть список команд.\n>> ");
 
     AkinatorCmd_t status = kUnknownCommand;
 
@@ -103,7 +107,14 @@ AkinatorCmd_t CallInterface(Tree *tree)
 
             case kUnknownCommand:
             {
-                printf(">> Неизвесная команда, используйте команду \"помощь\" для того, чтобы увидеть список команд.\n >>");
+                printf(">> Неизвесная команда, используйте команду \"пом\" для того, чтобы увидеть список команд.\n>> ");
+
+                break;
+            }
+
+            case kHelp:
+            {
+                PrintHelp();
 
                 break;
             }
@@ -115,24 +126,22 @@ AkinatorCmd_t CallInterface(Tree *tree)
                 break;
             }
 
-            case kFailedToFindObject:
             case kQuit:
             case kYesAnswer:
-            case kAkinatorSuccess:
             case kRightAnswer:
             case kWrongAnswer:
-            case kUnknownCommandInThisScope:
             case kNoAnswer:
 
             default:
             {
                 printf("kavo?");
 
-                return kUnknownCommand;
+                return kReadenUnknownCommand;
 
                 break;
             }
         }
+
         printf(">> ");
     }
 
@@ -143,8 +152,12 @@ AkinatorCmd_t CallInterface(Tree *tree)
 
 //==============================================================================
 
-AkinatorCmd_t CallGuesser(Tree *tree, TreeNode *node)
+AkinatorErrs_t CallGuesser(Tree     *tree,
+                           TreeNode *node)
 {
+    CHECK(tree);
+    CHECK(node);
+
     AkinatorCmd_t status = kUnknownCommand;
 
     printf(">> Акинатор начинает работу.\n");
@@ -165,9 +178,7 @@ AkinatorCmd_t CallGuesser(Tree *tree, TreeNode *node)
         }
         else
         {
-            printf(">> Неизвестная команда\n");
-
-            return kUnknownCommandInThisScope;
+            printf(">> Здесь вы можете отвечать либо да, либо нет.\n");
         }
     }
 
@@ -187,12 +198,10 @@ AkinatorCmd_t CallGuesser(Tree *tree, TreeNode *node)
         else if (status == kNoAnswer)
         {
             AddMember(tree, node);
-
-            return kNoAnswer;
         }
         else
         {
-            return kUnknownCommandInThisScope;
+            return kReadenUnknownCommand;
         }
     }
 
@@ -201,7 +210,8 @@ AkinatorCmd_t CallGuesser(Tree *tree, TreeNode *node)
 
 //==============================================================================
 
-AkinatorCmd_t AddMember(Tree *tree, TreeNode *node)
+AkinatorErrs_t AddMember(Tree     *tree,
+                         TreeNode *node)
 {
     printf(">> Хотите добавить объект?\n>> ");
 
@@ -238,7 +248,7 @@ AkinatorCmd_t AddMember(Tree *tree, TreeNode *node)
 
 //==============================================================================
 
-AkinatorCmd_t GiveDefinition(Tree *tree)
+AkinatorErrs_t GiveDefinition(Tree *tree)
 {
     CHECK(tree);
 
@@ -275,7 +285,9 @@ AkinatorCmd_t GiveDefinition(Tree *tree)
 
 //==============================================================================
 
-static void PrintDefinition(const Tree *tree, const Stack *stk, const TreeNode *node)
+static void PrintDefinition(const Tree     *tree,
+                            const Stack    *stk,
+                            const TreeNode *node)
 {
     CHECK(tree);
     CHECK(stk);
@@ -306,16 +318,19 @@ static void PrintDefinition(const Tree *tree, const Stack *stk, const TreeNode *
 
 //==============================================================================
 
-static AkinatorCmd_t PrintDifference(const Tree *tree)
+static AkinatorErrs_t PrintDifference(const Tree *tree)
 {
     CHECK(tree);
 
     static char lhs_obj_name[kMaxCmdLen] = {0};
     static char rhs_obj_name[kMaxCmdLen] = {0};
 
-    printf(">> Введите названия двух объектов, различия которых вы хотите увидеть.\n>> ");
+    printf(">> Введите названия двух объектов, различия которых вы хотите увидеть.\n"
+           ">> Введите название первого объекта:\n>> ");
+    GetStr(lhs_obj_name, kMaxCmdLen);
 
-    scanf("%s %s", lhs_obj_name, rhs_obj_name);
+    printf(">> Введите название второго объекта:\n>> ");
+    GetStr(rhs_obj_name, kMaxCmdLen);
 
     Stack lhs_stk = {0};
     Stack rhs_stk = {0};
@@ -343,16 +358,18 @@ static AkinatorCmd_t PrintDifference(const Tree *tree)
     StackDtor(&lhs_stk);
     StackDtor(&rhs_stk);
 
+    printf(">> Можете продолжить работу.\n");
+
     return kAkinatorSuccess;
 }
 
 //==============================================================================
 
-static void PrintDiff(const Tree *tree,
+static void PrintDiff(const Tree     *tree,
                       const TreeNode *lhs_node,
                       const TreeNode *rhs_node,
-                      const Stack *lhs_stk,
-                      const Stack *rhs_stk)
+                      const Stack    *lhs_stk,
+                      const Stack    *rhs_stk)
 {
     CHECK(tree);
     CHECK(lhs_node);
@@ -464,7 +481,8 @@ static TreeErrs_t ShowTree(Tree *tree)
 
 //==============================================================================
 
-static void PrintNodes(TreeNode *node, FILE *output_file)
+static void PrintNodes(TreeNode *node,
+                       FILE     *output_file)
 {
     CHECK(node);
     CHECK(output_file);
@@ -485,6 +503,19 @@ static void PrintNodes(TreeNode *node, FILE *output_file)
         PrintNodes(node->right, output_file);
     }
 
+}
+
+//==============================================================================
+
+static void PrintHelp()
+{
+    ColorPrintf(kGreen,">> Помощь здесь!\n\n");
+
+    for (size_t i = 0; i < kCmdCount; i++)
+    {
+        ColorPrintf(kGreen, "\t-%-8s: %s\n", AkinatorCommandsArray[i].cmd_string,
+                                             AkinatorCommandsArray[i].help_message);
+    }
 }
 
 //==============================================================================

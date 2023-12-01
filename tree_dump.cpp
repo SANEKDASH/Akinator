@@ -95,7 +95,6 @@ TreeErrs_t GraphDumpTree(Tree *tree)
 
     system(cmd_command);
 
-
     fprintf(log_file, /*"Called from file: %s\n"
                       "Called from function: %s\n"
                       "Line: %d\n"*/
@@ -121,7 +120,8 @@ TreeErrs_t GraphDumpTree(Tree *tree)
 
 //================================================================================================
 
-static void LogPrintTree(TreeNode *node, FILE *dot_file)
+static void LogPrintTree(TreeNode *node,
+                         FILE     *dot_file)
 {
     LOG_PRINT("node%p [style = filled, fillcolor = \"green\", shape = Mrecord, label = "
               "\"data: %s | {parent: %p | pointer: %p | left: %p | right: %p} \"]\n",

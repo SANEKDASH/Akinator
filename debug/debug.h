@@ -7,6 +7,25 @@
 #define CHECK(expression) ;
 #endif
 
+
+#ifndef ErrType
+#define Errtype int
+#endif
+
+#ifndef Success
+#define Success 0
+#endif
+
+#define CHECK_RETURN(...)           \
+{                                   \
+    Errtype status = __VA_ARGS__;   \
+                                    \
+    if (status != Success)          \
+    {                               \
+        return status;              \
+    }                               \
+}                                   \
+
 //#define calloc(num, size) safe_calloc(num , size, __LINE__, __func__, __FILE__)
 
 //#define free(ptr) safe_free(ptr, __LINE__, __func__, __FILE__);

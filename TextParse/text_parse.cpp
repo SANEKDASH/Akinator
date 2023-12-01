@@ -36,7 +36,8 @@ size_t GetFileSize(FILE *ptr_file)
 
 //==============================================================================
 
-TextErrs_t ReadTextFromFile(Text *text, const char *file_name)
+TextErrs_t ReadTextFromFile(Text       *text,
+                            const char *file_name)
 {
     FILE *input_file = fopen(file_name, "rb");
 
@@ -48,7 +49,7 @@ TextErrs_t ReadTextFromFile(Text *text, const char *file_name)
     }
 
     text->buf_size = GetFileSize(input_file) + 1;
-    text->buf       = (char *) calloc(text->buf_size, sizeof(char));
+    text->buf      = (char *) calloc(text->buf_size, sizeof(char));
 
     if (!text->buf)
     {
@@ -156,7 +157,8 @@ void FillText(Text *text)
 
 //==============================================================================
 
-void PrintTextInFile(FILE *output_file, Text *text)
+void PrintTextInFile(FILE *output_file,
+                     Text *text)
 {
     for (size_t i = 0; i < text->lines_count; i++)
     {
@@ -166,7 +168,8 @@ void PrintTextInFile(FILE *output_file, Text *text)
 
 //==============================================================================
 
-TextErrs_t GetStr(char *string, size_t max_size)
+TextErrs_t GetStr(char   *string,
+                  size_t  max_size)
 {
     int i = 0;
 
